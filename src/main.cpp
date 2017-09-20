@@ -53,6 +53,7 @@ int main(int argc, char *argv[])
 {
     print_cmd_heading(app_name);  
     process_args(argc, argv);
+cout<<"a thing";
 
     if(argc == 1)
     {
