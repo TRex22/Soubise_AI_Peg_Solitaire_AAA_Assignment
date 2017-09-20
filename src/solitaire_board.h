@@ -1,5 +1,7 @@
 /*Class header for the game definitions and rules*/
-/*Using the European style board layout*/
+/*Using the European style board layout
+  The European style has no solution if the centre is empty however there are 3 postions where a valid solution is viable
+  I will be only using 1 of those positions*/
 /*Max 36 pegs in play at a time with 1 missing*/
 /* Board's dimensions in a square are 7x7*/
 /*12 positions are missing fromthe square, 3 in each corner in a triangle*/
@@ -41,6 +43,7 @@ class GameBoard
 
 		GameBoard();
 		void printBoard();
+		void euroConfig_Start();
 
 };
 
@@ -98,6 +101,22 @@ GameBoard::GameBoard()// default empty board
 		board.push_back(row);
 	}
 
+}
+void GameBoard::euroConfig_Start()//------Standard Configuration config
+{
+	for (int i = 0; i < (int) board.size(); ++i)
+	{
+		for (int j = 0; j <(int) board[i].size(); ++j)
+		{
+			if ((i==0)&&(j==2))
+			{
+				board[i][j] =0;
+			}else if (board[i][j] ==0)
+			{
+				board[i][j]=1;
+			}
+		}
+	}
 }
 void GameBoard::printBoard()
 {

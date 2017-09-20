@@ -16,6 +16,7 @@ Jason Chalom 711985
 
 /* Evan TODO:
     Optimise board code using OMP and/or get better code (sorry future Evan its quite messy)
+    make the randomising function that returns a 0 or a 1
 */
 
 /* Graph links:
@@ -56,13 +57,15 @@ using namespace std;
 int main(int argc, char *argv[]) 
 {
     print_cmd_heading(app_name);  
-    //process_args(argc, argv);
+    process_args(argc, argv);
 
 
     /*Board testing*/
     if (DEBUG)
     {
     GameBoard gb;
+    gb.printBoard();
+    gb.euroConfig_Start();
     gb.printBoard();
     }
 
