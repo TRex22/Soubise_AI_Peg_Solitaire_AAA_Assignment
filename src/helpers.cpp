@@ -622,7 +622,7 @@ void write_results_to_file (std::string filename, std::string header, std::strin
 
 void print_cmd_heading(string app_name)
 {
-	printf("%s\nJason Chalom 711985\n2017\n\n", app_name.c_str());
+	printf("%s\nJason Chalom 711985\nEvan Bancroft 879192\n2017\n\n", app_name.c_str());
 }
 
 void print_usage(char *argv[])

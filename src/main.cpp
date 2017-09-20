@@ -1,7 +1,7 @@
 /*	
 AAA Assignment 2017
 
-Evan Bancroft
+Evan Bancroft 879192
 Jason Chalom 711985 
 
 */
@@ -12,6 +12,10 @@ Jason Chalom 711985
 
     gnuplot c++ function
     https://stackoverflow.com/questions/2808398/easily-measure-elapsed-time
+*/
+
+/* Evan TODO:
+    Optimise board code using OMP and/or get better code (sorry future Evan its quite messy)
 */
 
 /* Graph links:
@@ -38,7 +42,7 @@ Jason Chalom 711985
 #define app_name "COMS3005 Assignment 2017"
 #define results1_header "amount,number_denominations,time"
 #define results1_location "./results/results_exp1.csv"
-bool DEBUG = false;
+bool DEBUG = 1;
 
 
 /* Headers */
@@ -52,8 +56,16 @@ using namespace std;
 int main(int argc, char *argv[]) 
 {
     print_cmd_heading(app_name);  
-    process_args(argc, argv);
-cout<<"a thing";
+    //process_args(argc, argv);
+
+
+    /*Board testing*/
+    if (DEBUG)
+    {
+    GameBoard gb;
+    gb.printBoard();
+    }
+
 
     if(argc == 1)
     {
