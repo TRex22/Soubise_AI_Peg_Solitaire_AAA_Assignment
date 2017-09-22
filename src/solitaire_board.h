@@ -44,6 +44,7 @@ class GameBoard
 		GameBoard();
 		void printBoard();
 		void euroConfig_Start();
+		void euroConfig_Random();
 
 };
 
@@ -126,6 +127,27 @@ void GameBoard::printBoard()
 		for (int j = 0; j <(int) board[i].size(); ++j)
 		{
 			cout<<board[i][j]<<'\t';
+		}
+		cout<<'\n';
+	}
+	cout<<'\n';
+}
+void GameBoard::euroConfig_Random()
+{
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_int_distribution<int> distribution(1,100);
+	 
+	cout<<'\n';
+	for (int i = 0; i < (int) board.size(); ++i)
+	{
+		for (int j = 0; j <(int) board[i].size(); ++j)
+		{
+			if(board[i][j]==0)
+			{
+			int randNum = distribution(mt);
+			board[i][j]=randNum%2;
+			}
 		}
 		cout<<'\n';
 	}

@@ -64,9 +64,13 @@ int main(int argc, char *argv[])
     if (DEBUG)
     {
     GameBoard gb;
-    gb.printBoard();
+    //gb.printBoard();
     gb.euroConfig_Start();
     gb.printBoard();
+
+    GameBoard gb2;
+    gb2.euroConfig_Random();
+    gb2.printBoard();
     }
 
 
