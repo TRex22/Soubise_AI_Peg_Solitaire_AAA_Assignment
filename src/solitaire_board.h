@@ -45,6 +45,7 @@ class GameBoard
 		void printBoard();
 		void euroConfig_Start();
 		void euroConfig_Random();
+		void jumpLeft(int r,int c);
 
 };
 
@@ -152,4 +153,13 @@ void GameBoard::euroConfig_Random()
 		cout<<'\n';
 	}
 	cout<<'\n';
+}
+GameBoard::void jumpLeft(int r,int c)
+{
+	if (board[i][j-1]== 0)
+	{	
+		board[i][j-1]=1;
+		board[i][j] =0;// eliminated
+		board[i][j+1] =0;//moved
+	}
 }

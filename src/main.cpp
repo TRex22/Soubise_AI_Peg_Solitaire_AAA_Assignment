@@ -43,6 +43,7 @@ Jason Chalom 711985
 #define app_name "COMS3005 Assignment 2017"
 #define results1_header "amount,number_denominations,time"
 #define results1_location "./results/results_exp1.csv"
+GameBoard gb;
 bool DEBUG = 1;
 
 
@@ -63,14 +64,8 @@ int main(int argc, char *argv[])
     /*Board testing*/
     if (DEBUG)
     {
-    GameBoard gb;
+    
     //gb.printBoard();
-    gb.euroConfig_Start();
-    gb.printBoard();
-
-    GameBoard gb2;
-    gb2.euroConfig_Random();
-    gb2.printBoard();
     }
 
 
@@ -133,14 +128,26 @@ void process_args(int argc, char *argv[])
             halt_execution();
         }         
 
-        if(contains_string(str, "t") || contains_string(str, "test"))
+        if(contains_string(str, "rf") || contains_string(str, "run_full"))
         {
-            test();
+          	gb.euroConfig_Start();
+    		gb.printBoard();
         }  
 
-        if(contains_string(str, "r1") || contains_string(str, "run1") || contains_string(str, "run") || contains_string(str, "r"))
+        if(contains_string(str, "rr") || contains_string(str, "run_rand") || contains_string(str, "runr"))
         {
-            run_experiment1();
-        }   
+            gb.euroConfig_Random();
+    		gb.printBoard();
+        }
+
+        if(contains_string(str, "-m") || contains_string(str, "manual"))
+        {
+          	string inst="";
+          	int i=0;,j =0;
+          	cin>>i;
+          	cin>>j;
+
+        }
+
     }
 }
