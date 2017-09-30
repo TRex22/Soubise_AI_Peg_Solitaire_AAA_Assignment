@@ -16,7 +16,6 @@ Jason Chalom 711985
 
 /* Evan TODO:
     Optimise board code using OMP and/or get better code (sorry future Evan its quite messy)
-    make the randomising function that returns a 0 or a 1
 */
 
 /* Graph links:
@@ -143,10 +142,64 @@ void process_args(int argc, char *argv[])
         if(contains_string(str, "-m") || contains_string(str, "manual"))
         {
           	string inst="";
-          	int i=0;,j =0;
+          	int i=0,j =0;
           	cin>>i;
-          	cin>>j;
-
+	        cin>>j;
+	        cin>>inst;// L,R,U,D
+          	while((i!=-1)||(j!=-1))
+          	{
+          		if(inst=="L")
+          		{
+		          	bool responce =gb.jumpLeft(i,j);
+		          	if (!responce)
+		          	{
+		          		cout<< "Invalid move\n";
+		          	}else
+		          	{
+		          		cout<<"Remaining Pegs: "<<gb.return1()<<'\n';
+		          		gb.printBoard();
+		          	}
+	         	}else if(inst=="R")
+	         	{
+	         		bool responce =gb.jumpRight(i,j);
+		          	if (!responce)
+		          	{
+		          		cout<< "Invalid move\n";
+		          	}else
+		          	{
+		          		cout<<"Remaining Pegs: "<<gb.return1()<<'\n';
+		          		gb.printBoard();
+		          	}
+	         	}else if(inst=="U")
+	         	{
+	         		bool responce =gb.jumpUp(i,j);
+		          	if (!responce)
+		          	{
+		          		cout<< "Invalid move\n";
+		          	}else
+		          	{
+		          		cout<<"Remaining Pegs: "<<gb.return1()<<'\n';
+		          		gb.printBoard();
+		          	}
+	         	}else if(inst=="D")
+	         	{
+	         		bool responce =gb.jumpDown(i,j);
+		          	if (!responce)
+		          	{
+		          		cout<< "Invalid move\n";
+		          	}else
+		          	{
+		          		cout<<"Remaining Pegs: "<<gb.return1()<<'\n';
+		          		gb.printBoard();
+		          	}
+	         	}else
+	         	{
+	         		cout<<"invalid direction. Use 'L,R,D,U'\n";
+	         	}
+	          	cin>>i;
+	          	cin>>j;
+	          	cin>>inst;
+	      	}
         }
 
     }

@@ -45,7 +45,11 @@ class GameBoard
 		void printBoard();
 		void euroConfig_Start();
 		void euroConfig_Random();
-		void jumpLeft(int r,int c);
+		int return1();
+		bool jumpLeft(int i,int j);
+		bool jumpRight(int i,int j);
+		bool jumpUp(int i,int j);
+		bool jumpDown(int i,int j);
 
 };
 
@@ -154,12 +158,74 @@ void GameBoard::euroConfig_Random()
 	}
 	cout<<'\n';
 }
-GameBoard::void jumpLeft(int r,int c)
+bool GameBoard::jumpLeft(int i,int j)
 {
-	if (board[i][j-1]== 0)
+	if ((board[i][j-1]== 0)&&(board[i][j+1]==1)&&(j>0))
 	{	
 		board[i][j-1]=1;
 		board[i][j] =0;// eliminated
 		board[i][j+1] =0;//moved
+		return true;
 	}
+	else
+	{
+		return false;
+	}
+}
+bool GameBoard::jumpRight(int i,int j)
+{
+	if ((board[i][j+1]== 0)&&(board[i][j-1]==1)&&(j<7))
+	{	
+		board[i][j+1]=1;
+		board[i][j] =0;// eliminated
+		board[i][j-1] =0;//moved
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+bool GameBoard::jumpUp(int i,int j)
+{
+	if ((board[i-1][j]== 0)&&(board[i+1][j]==1)&&(i>0))
+	{	
+		board[i-1][j]=1;
+		board[i][j] =0;// eliminated
+		board[i+1][j] =0;//moved
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+bool GameBoard::jumpDown(int i,int j)
+{
+	if ((board[i+1][j]== 0)&&(board[i-1][j]==1)&&(i<7))
+	{	
+		board[i+1][j]=1;
+		board[i][j] =0;// eliminated
+		board[i-1][j] =0;//moved
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+int GameBoard::return1()
+{
+	int count=0;
+	for (int i = 0; i < (int) board.size(); ++i)
+	{
+		for (int j = 0; j <(int) board[i].size(); ++j)
+		{
+			if (board[i][j]==1)
+			{
+				count =count +1;
+			}
+		}
+	}
+	return count;
 }
