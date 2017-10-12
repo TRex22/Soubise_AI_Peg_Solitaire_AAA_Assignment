@@ -21,10 +21,8 @@ Jason Chalom 711985
     Json:
     =====
     1. Stack based backtracking
-    2. fix memeory leaks
     3. visualization
     4. latex
-    5. timing
 */
 
 #include <stdio.h>
@@ -52,7 +50,7 @@ bool DEBUG = 1;
 /* Headers */
 int main(int argc, char *argv[]);
 void test();
-void run_experiment1();
+void run_backtracking();
 void process_args(int argc, char *argv[]);
 
 
@@ -85,34 +83,37 @@ void test()
     cout<<"TESTS...."<<endl;
 }
 
-void run_experiment1()
+void run_backtracking()
 {
     cout << "Running experiment 1...\n\n";
     write_results_to_file(results1_location, results1_header, "");
     
     double total_start = omp_get_wtime();
     
-    // increment change
+    // increment number of experiments
     for (int i = 1; i <= 1000; i=i+100)
     {
         int amount = i;
-        // select denominations from full collection
-        for(int j = 1; j < 10; j++)
-        {
-            double start = omp_get_wtime();
+        gb.euroConfig_Random();
+        gb.printBoard();
+        GameBoard prev;
+        std::vector<std::vector<int>> path;
+        double start = omp_get_wtime();
 
-            // Add what ever being timed here
+        // Add what ever being timed here
+        gb = backtracking_recursive(gb, prev, path);
 
-            double time = omp_get_wtime() - start;
+        double time = omp_get_wtime() - start;
+        gb.printBoard();
 
-            // Output results
-            cout << "amount: " << amount << " number_denominations: " << j << " time: " << time << endl << endl;
 
-            // print file line
-            ostringstream out;
-            out << amount << "," << j << "," << time << endl; 
-            write_results_to_file(results1_location, out.str());
-        }
+        // Output results
+        cout << "amount: " << amount << " path_length: " << path.size() << " time: " << time << endl << endl;
+
+        // print file line
+        ostringstream out;
+        out << amount << "," << path.size() << "," << time << endl; 
+        write_results_to_file(results1_location, out.str());
     }
 
     double total_time = omp_get_wtime() - total_start;    
@@ -144,13 +145,7 @@ void process_args(int argc, char *argv[])
 
         if(contains_string(str, "rb") || contains_string(str, "run_back") || contains_string(str, "runb"))
         {
-            gb.euroConfig_Random();
-            gb.printBoard();
-
-            GameBoard prev;
-            std::vector<std::vector<int>> path;
-            gb = backtracking_recursive(gb, prev, path);
-            gb.printBoard();
+            run_backtracking();
         }
 
         if(contains_string(str, "-m") || contains_string(str, "manual"))
