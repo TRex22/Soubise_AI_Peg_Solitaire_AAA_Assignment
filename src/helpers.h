@@ -21,7 +21,7 @@ using namespace std;
 #include "timings.h"
 
 /*Sample Algorithm Lab 3 Test shit*/
-SampleOutput *lab3_test_algorithm(std::vector<int> A, int n, int m);
+SampleOutput lab3_test_algorithm(std::vector<int> A, int n, int m);
 
 /*Data structures*/
 std::vector<int> create_vector(int n);
@@ -45,15 +45,15 @@ int linearSearch2(int* myList, int n, int key);
 
 std::vector<int> swop(std::vector<int> vect, int idex1, int idex2);
 std::vector<int> bubbleSort(std::vector<int> vect, int n);
-timings* bubbleSort_noEscape(std::vector<int> vect, int n);
-timings* bubbleSort_Escape(std::vector<int> vect, int n);
-timings* selectionSort(std::vector<int> vect, int n);
-timings* mergeSort(std::vector<int> vect, int left, int right);
-timings* improved_mergeSort(std::vector<int> vect, int left, int right);
-timings* quickSort(std::vector<int> vect, int left, int right);
+timings bubbleSort_noEscape(std::vector<int> vect, int n);
+timings bubbleSort_Escape(std::vector<int> vect, int n);
+timings selectionSort(std::vector<int> vect, int n);
+timings mergeSort(std::vector<int> vect, int left, int right);
+timings improved_mergeSort(std::vector<int> vect, int left, int right);
+timings quickSort(std::vector<int> vect, int left, int right);
 
-timings* activity_selection();
-timings* making_change();
+timings activity_selection();
+timings making_change();
 
 /*MISC*/
 int random_index(int a, int b);

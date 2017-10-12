@@ -149,7 +149,7 @@ void process_args(int argc, char *argv[])
 
             GameBoard prev;
             std::vector<std::vector<int>> path;
-            gb = backtracking_player(gb, prev, path);
+            gb = backtracking_recursive(gb, prev, path);
             gb.printBoard();
         }
 

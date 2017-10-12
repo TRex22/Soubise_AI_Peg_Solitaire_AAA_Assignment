@@ -9,37 +9,37 @@
 
 
 /*Sample Algorithm Lab 3 Test shit*/
-SampleOutput *lab3_test_algorithm(std::vector<int> A, int n, int m)
+SampleOutput lab3_test_algorithm(std::vector<int> A, int n, int m)
 {
-	SampleOutput *out = new SampleOutput(n, m);
-	out->C.reserve(m);
-	out->B.reserve(n);
+	SampleOutput out(n, m);
+	out.C.reserve(m);
+	out.B.reserve(n);
 
 	for (int i = 0; i < n; i++)
 	{
-		out->B[i] = -33;
-		// out->C[i] = -33;
+		out.B[i] = -33;
+		// out.C[i] = -33;
 	}
 
 	for (int i = 0; i < m; i++)
 	{
-		out->C[i] = 0;
+		out.C[i] = 0;
 	}
 
 	for (int i = 0; i < n; i++)
 	{
-		out->C[A[i]-1] = out->C[A[i]-1] + 1;
+		out.C[A[i]-1] = out.C[A[i]-1] + 1;
 	}
 
 	for (int i = 1; i < m; i++)
 	{
-		out->C[i] = out->C[i] + out->C[i-1];
+		out.C[i] = out.C[i] + out.C[i-1];
 	}
 
 	for (int i = n-1; i >= 0; i--)
 	{
-		out->B[out->C[A[i]-1]] = A[i]-1;
-		out->C[A[i]-1] = out->C[A[i]-1] - 1;
+		out.B[out.C[A[i]-1]] = A[i]-1;
+		out.C[A[i]-1] = out.C[A[i]-1] - 1;
 	}
 
 	return out;
@@ -155,15 +155,6 @@ std::vector<int> create_rnd_vector(int n, int biggestSize)
 	return vect;
 }
 
-int* copy_vect_array(int n)
-{
-	std::vector<int> vect = create_rnd_vector(n);
-	int* array = new int[n];
-	std::copy(vect.begin(), vect.end(), array);
-
-	return array;
-}
-
 std::vector<int> insert_into_vector_ordered(std::vector<int> vect, int n, int key, int pos)
 {
 	if(pos < n)
@@ -270,13 +261,13 @@ std::vector<int> bubbleSort(std::vector<int> vect, int n)
 	return vect;
 }
 
-timings* bubbleSort_noEscape(std::vector<int> vect, int n)
+timings bubbleSort_noEscape(std::vector<int> vect, int n)
 {
-	timings *results = new timings();
+	timings results;
 
 	double swap_time = 0.0;
 	double comparison_time = 0.0;
-	results->num_times = 2; 
+	results.num_times = 2; 
 
 	for (int i = n-1; i != 0; i--)
 	{
@@ -296,19 +287,19 @@ timings* bubbleSort_noEscape(std::vector<int> vect, int n)
 
 	comparison_time -= swap_time;
 	// cout << "swap: " << swap_time << "comp: " << comparison_time << endl;
-	results->timing_results.push_back(swap_time);
-	results->timing_results.push_back(comparison_time);
-	results->vect = vect;
+	results.timing_results.push_back(swap_time);
+	results.timing_results.push_back(comparison_time);
+	results.vect = vect;
 	return results;
 }
 
-timings* bubbleSort_Escape(std::vector<int> vect, int n)
+timings bubbleSort_Escape(std::vector<int> vect, int n)
 {
-	timings *results = new timings();
+	timings results;
 
 	double swap_time = 0.0;
 	double comparison_time = 0.0;
-	results->num_times = 2; 
+	results.num_times = 2; 
 
 	int i = n-1;
 	bool sorting = true;
@@ -345,19 +336,19 @@ timings* bubbleSort_Escape(std::vector<int> vect, int n)
 	}
 
 	comparison_time -= swap_time;
-	results->timing_results.push_back(swap_time);
-	results->timing_results.push_back(comparison_time);
-	results->vect = vect;
+	results.timing_results.push_back(swap_time);
+	results.timing_results.push_back(comparison_time);
+	results.vect = vect;
 	return results;
 }
 
-timings* selectionSort(std::vector<int> vect, int n)
+timings selectionSort(std::vector<int> vect, int n)
 {
-	timings *results = new timings();
+	timings results;
 
 	double swap_time = 0.0;
 	double comparison_time = 0.0;
-	results->num_times = 2; 
+	results.num_times = 2; 
 
 	for (int i = n-1; i >= 1; i--)
 	{
@@ -373,20 +364,20 @@ timings* selectionSort(std::vector<int> vect, int n)
 	}
 
 	comparison_time -= swap_time;
-	results->timing_results.push_back(swap_time);
-	results->timing_results.push_back(comparison_time);
-	results->vect = vect;
+	results.timing_results.push_back(swap_time);
+	results.timing_results.push_back(comparison_time);
+	results.vect = vect;
 	return results;
 }
 
 //0, n-1
-timings* mergeSort(std::vector<int> vect, int left, int right)
+timings mergeSort(std::vector<int> vect, int left, int right)
 {
-	timings *results = new timings();
+	timings results;
 
 	double swap_time = 0.0;
 	double comparison_time = 0.0;
-	results->num_times = 2; 
+	results.num_times = 2; 
 
 	if(right-left > 0)
 	{
@@ -425,19 +416,19 @@ timings* mergeSort(std::vector<int> vect, int left, int right)
 	}
 
 	comparison_time -= swap_time;
-	results->timing_results.push_back(swap_time);
-	results->timing_results.push_back(comparison_time);
-	results->vect = vect;
+	results.timing_results.push_back(swap_time);
+	results.timing_results.push_back(comparison_time);
+	results.vect = vect;
 	return results;
 }
 
-timings* improved_mergeSort(std::vector<int> vect, int left, int right)
+timings improved_mergeSort(std::vector<int> vect, int left, int right)
 {
-	timings *results = new timings();
+	timings results;
 
 	double swap_time = 0.0;
 	double comparison_time = 0.0;
-	results->num_times = 2; 
+	results.num_times = 2; 
 
 	if(right-left > 0)
 	{
@@ -478,19 +469,19 @@ timings* improved_mergeSort(std::vector<int> vect, int left, int right)
 	}
 
 	comparison_time -= swap_time;
-	results->timing_results.push_back(swap_time);
-	results->timing_results.push_back(comparison_time);
-	results->vect = vect;
+	results.timing_results.push_back(swap_time);
+	results.timing_results.push_back(comparison_time);
+	results.vect = vect;
 	return results;
 }
 
-timings* quickSort(std::vector<int> vect, int left, int right)
+timings quickSort(std::vector<int> vect, int left, int right)
 {
-	timings *results = new timings();
+	timings results;
 
 	double swap_time = 0.0;
 	double comparison_time = 0.0;
-	results->num_times = 2; 
+	results.num_times = 2; 
 
 	if(right > left)
 	{
@@ -529,28 +520,26 @@ timings* quickSort(std::vector<int> vect, int left, int right)
 	}
 
 	comparison_time -= swap_time;
-	results->timing_results.push_back(swap_time);
-	results->timing_results.push_back(comparison_time);
-	results->vect = vect;
+	results.timing_results.push_back(swap_time);
+	results.timing_results.push_back(comparison_time);
+	results.vect = vect;
 	return results;
 }
 
-timings* activity_selection()
+timings activity_selection()
 {
-	timings *results = new timings();
-	results->num_times = 2; 
+	timings results;
+	results.num_times = 2; 
 
 	std::vector<AdjacencyItem> list;
-	AdjacencyItem *ai = new AdjacencyItem(0, 5);
-	list.push_back(*ai);
-	ai = new AdjacencyItem(3, 7);
-	list.push_back(*ai);
-	ai = new AdjacencyItem(5, 9);
-	list.push_back(*ai);
-	ai = new AdjacencyItem(4, 10);
-	list.push_back(*ai);
-
-	// std::sort(list.begin(), list.end(), [](AdjacencyItem & one, AdjacencyItem & two){return one.endTime < two.endTime;});
+	AdjacencyItem ai(0, 5);
+	list.push_back(ai);
+	AdjacencyItem ai2(3, 7);
+	list.push_back(ai2);
+	AdjacencyItem ai3(5, 9);
+	list.push_back(ai3);
+	AdjacencyItem ai4(4, 10);
+	list.push_back(ai4);
 
 	AdjacencyItem activity = list[0];
 	int max = 1;
@@ -565,15 +554,15 @@ timings* activity_selection()
 		}
 	}
 
-	results->max = max;
-	results->activities = list;
+	results.max = max;
+	results.activities = list;
 	return results;
 }
 
-timings* making_change(int amount, int num_denom, std::vector<int> denominations)
+timings making_change(int amount, int num_denom, std::vector<int> denominations)
 {
-	timings *results = new timings();
-	results->num_times = 2;
+	timings results;
+	results.num_times = 2;
 	std::vector<int> change(num_denom);
 	change.reserve(num_denom); 
 
@@ -584,7 +573,7 @@ timings* making_change(int amount, int num_denom, std::vector<int> denominations
 		tmpAmount = tmpAmount - (change[i]*denominations[i]);
 	}
 
-	results->vect = change;
+	results.vect = change;
 	return results;
 }
 
