@@ -28,8 +28,8 @@ using namespace std;
 class GameBoard
 {
 	private:
-		int row = 0;
-		int col = 0;
+		int row = 7;
+		int col = 7;
 	
 	public:
 		/*varibles*/
@@ -45,11 +45,14 @@ class GameBoard
 		void printBoard();
 		void euroConfig_Start();
 		void euroConfig_Random();
-		int return1();
+		int numPegs();
+		int numMoves();
 		bool jumpLeft(int i,int j);
 		bool jumpRight(int i,int j);
 		bool jumpUp(int i,int j);
 		bool jumpDown(int i,int j);
+		std::vector<std::vector<int>> getPegs();
+		void copy(GameBoard gb);
 
 };
 
@@ -72,8 +75,8 @@ void GameBoard::setCol(int c)
 
 GameBoard::GameBoard()// default empty board
 {
-	setRow(7);
-	setCol(7);
+	setRow(row);
+	setCol(col);
 
 	//init rows of board
 	for (int i = 0; i < getRow(); ++i)
@@ -160,6 +163,8 @@ void GameBoard::euroConfig_Random()
 }
 bool GameBoard::jumpLeft(int i,int j)
 {
+	if(j <= 0)
+		return false;
 	if ((board[i][j-1]== 0)&&(board[i][j+1]==1)&&(j>0))
 	{	
 		board[i][j-1]=1;
@@ -174,7 +179,10 @@ bool GameBoard::jumpLeft(int i,int j)
 }
 bool GameBoard::jumpRight(int i,int j)
 {
-	if ((board[i][j+1]== 0)&&(board[i][j-1]==1)&&(j<7))
+	if(j >= col)
+		return false;
+
+	if ((board[i][j+1]== 0)&&(board[i][j-1]==1)&&(j<col))
 	{	
 		board[i][j+1]=1;
 		board[i][j] =0;// eliminated
@@ -188,6 +196,9 @@ bool GameBoard::jumpRight(int i,int j)
 }
 bool GameBoard::jumpUp(int i,int j)
 {
+	if(i <= 0)
+		return false;
+
 	if ((board[i-1][j]== 0)&&(board[i+1][j]==1)&&(i>0))
 	{	
 		board[i-1][j]=1;
@@ -202,7 +213,10 @@ bool GameBoard::jumpUp(int i,int j)
 }
 bool GameBoard::jumpDown(int i,int j)
 {
-	if ((board[i+1][j]== 0)&&(board[i-1][j]==1)&&(i<7))
+	if(i >= row)
+		return false;
+
+	if ((board[i+1][j]== 0)&&(board[i-1][j]==1)&&(i<row))
 	{	
 		board[i+1][j]=1;
 		board[i][j] =0;// eliminated
@@ -214,7 +228,7 @@ bool GameBoard::jumpDown(int i,int j)
 		return false;
 	}
 }
-int GameBoard::return1()
+int GameBoard::numPegs()
 {
 	int count=0;
 	for (int i = 0; i < (int) board.size(); ++i)
@@ -228,4 +242,35 @@ int GameBoard::return1()
 		}
 	}
 	return count;
+}
+
+int GameBoard::numMoves()
+{
+	int numMoves = row*col*numPegs();
+	return numMoves;
+}
+
+std::vector<std::vector<int>> GameBoard::getPegs()
+{
+	std::vector<std::vector<int>> pegs;
+	for(int i = 0; i < row; i++)
+	{
+		for (int j = 0; j < col; j++)
+		{
+			if(board[i][j] == 1)
+			{
+				std::vector<int> coord;
+				coord.push_back(i);
+				coord.push_back(j);
+				pegs.push_back(coord);
+			}
+		}
+	}
+
+	return pegs;
+}
+
+void GameBoard::copy(GameBoard gb)
+{
+	this->board = gb.board;
 }

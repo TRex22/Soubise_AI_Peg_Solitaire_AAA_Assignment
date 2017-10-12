@@ -7,22 +7,24 @@ Jason Chalom 711985
 */
 
 /*TODO:
-	Cleanup all the excess from my labs
-    Timer class
 
-    gnuplot c++ function
-    https://stackoverflow.com/questions/2808398/easily-measure-elapsed-time
-*/
+    http://courses.csail.mit.edu/6.884/spring10/labs/lab5.pdf
 
-/* Evan TODO:
-    Optimise board code using OMP and/or get better code (sorry future Evan its quite messy)
-*/
+    NEW Evan
+    =====
+    1. makeMove(moveID, i, j) must update state and return t/f. Take in 0,1,2,3 for each kind of move
+    2. checkIfMoveValid
+    3. fix all move checks
+    4. check if found solution
 
-/* Graph links:
-    https://stackoverflow.com/questions/765408/c-free-easy-way-to-draw-graphs-and-charts
-    http://www.gnuplot.info/
-    http://www.gnuplot.info/links.html
-    http://stahlke.org/dan/gnuplot-iostream/
+
+    Json:
+    =====
+    1. Stack based backtracking
+    2. fix memeory leaks
+    3. visualization
+    4. latex
+    5. timing
 */
 
 #include <stdio.h>
@@ -36,6 +38,7 @@ Jason Chalom 711985
 
 #include "helpers.h"
 #include "solitaire_board.h"
+#include "backtracking.cpp"
 
 
 /* Global variables */
@@ -139,6 +142,17 @@ void process_args(int argc, char *argv[])
     		gb.printBoard();
         }
 
+        if(contains_string(str, "rb") || contains_string(str, "run_back") || contains_string(str, "runb"))
+        {
+            gb.euroConfig_Random();
+            gb.printBoard();
+
+            GameBoard prev;
+            std::vector<std::vector<int>> path;
+            gb = backtracking_player(gb, prev, path);
+            gb.printBoard();
+        }
+
         if(contains_string(str, "-m") || contains_string(str, "manual"))
         {
           	string inst="";
@@ -156,7 +170,7 @@ void process_args(int argc, char *argv[])
 		          		cout<< "Invalid move\n";
 		          	}else
 		          	{
-		          		cout<<"Remaining Pegs: "<<gb.return1()<<'\n';
+		          		cout<<"Remaining Pegs: "<<gb.numPegs()<<'\n';
 		          		gb.printBoard();
 		          	}
 	         	}else if(inst=="R")
@@ -167,7 +181,7 @@ void process_args(int argc, char *argv[])
 		          		cout<< "Invalid move\n";
 		          	}else
 		          	{
-		          		cout<<"Remaining Pegs: "<<gb.return1()<<'\n';
+		          		cout<<"Remaining Pegs: "<<gb.numPegs()<<'\n';
 		          		gb.printBoard();
 		          	}
 	         	}else if(inst=="U")
@@ -178,7 +192,7 @@ void process_args(int argc, char *argv[])
 		          		cout<< "Invalid move\n";
 		          	}else
 		          	{
-		          		cout<<"Remaining Pegs: "<<gb.return1()<<'\n';
+		          		cout<<"Remaining Pegs: "<<gb.numPegs()<<'\n';
 		          		gb.printBoard();
 		          	}
 	         	}else if(inst=="D")
@@ -189,7 +203,7 @@ void process_args(int argc, char *argv[])
 		          		cout<< "Invalid move\n";
 		          	}else
 		          	{
-		          		cout<<"Remaining Pegs: "<<gb.return1()<<'\n';
+		          		cout<<"Remaining Pegs: "<<gb.numPegs()<<'\n';
 		          		gb.printBoard();
 		          	}
 	         	}else
