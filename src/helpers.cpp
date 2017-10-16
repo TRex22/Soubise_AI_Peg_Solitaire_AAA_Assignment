@@ -616,10 +616,13 @@ void print_cmd_heading(string app_name)
 
 void print_usage(char *argv[])
 {   
-    printf("At least two parameters must be selected.\n-1 will denote inf value\n\n");
-    printf("usage: %s -t -r1\n", argv[0]);
-    printf("test -t\n");
-    printf("run -r\n");
+    printf("At least two parameters must be selected.\n\n");
+    printf("usage: %s -rr -m\n", argv[0]);
+    printf("Random state -rr\n");
+    printf("Full state -rf\n");
+    printf("Run Backtracking -rb\n");
+    printf("Manual -r\n");
+    printf("Help -h\n");
 }
 
 bool contains_string(string input, string str)

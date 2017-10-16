@@ -47,10 +47,8 @@ class GameBoard
 		void euroConfig_Random();
 		int numPegs();
 		int numMoves();
-		bool jumpLeft(int i,int j);
-		bool jumpRight(int i,int j);
-		bool jumpUp(int i,int j);
-		bool jumpDown(int i,int j);
+		bool makeMove(int id,int r, int c);
+		bool checkIfMoveValid(int id,int r,int c);
 		std::vector<std::vector<int>> getPegs();
 		void copy(GameBoard gb);
 
@@ -161,73 +159,108 @@ void GameBoard::euroConfig_Random()
 	}
 	cout<<'\n';
 }
-bool GameBoard::jumpLeft(int i,int j)
-{
-	if(j <= 0)
-		return false;
-	if ((board[i][j-1]== 0)&&(board[i][j+1]==1)&&(j>0))
-	{	
-		board[i][j-1]=1;
-		board[i][j] =0;// eliminated
-		board[i][j+1] =0;//moved
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-bool GameBoard::jumpRight(int i,int j)
-{
-	if(j >= col)
-		return false;
 
-	if ((board[i][j+1]== 0)&&(board[i][j-1]==1)&&(j<col))
-	{	
-		board[i][j+1]=1;
-		board[i][j] =0;// eliminated
-		board[i][j-1] =0;//moved
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-bool GameBoard::jumpUp(int i,int j)
+bool GameBoard::makeMove(int id,int r, int c)
 {
-	if(i <= 0)
-		return false;
-
-	if ((board[i-1][j]== 0)&&(board[i+1][j]==1)&&(i>0))
-	{	
-		board[i-1][j]=1;
-		board[i][j] =0;// eliminated
-		board[i+1][j] =0;//moved
-		return true;
-	}
-	else
+	switch(id)
 	{
-		return false;
+		case 0:	{// up
+					board[r][c]=0;
+					board[r-1][c]=0;
+					board[r-2][c]=1;
+					return true;
+					break;					
+				}
+		case 1:	{//right
+					board[r][c] = 0;
+					board[r][c+1] = 0;
+					board[r][c+2] = 1;
+					return true;
+					break;
+				}
+		case 2:	{// down
+					board[r][c]=0;
+					board[r+1][c]=0;
+					board[r+2][c]=1;
+					return true;
+					break;					
+				}
+		case 3:	{//left
+					board[r][c] = 0;
+					board[r][c-1] = 0;
+					board[r][c-2] = 1;
+					return true;
+					break;
+				}
+		default:{	
+					std::cout<<"Invalid ID \n";
+					return false;
+					break;
+				}
+				
 	}
+
 }
-bool GameBoard::jumpDown(int i,int j)
+bool GameBoard::checkIfMoveValid(int id,int r,int c)
 {
-	if(i >= row)
-		return false;
-
-	if ((board[i+1][j]== 0)&&(board[i-1][j]==1)&&(i<row))
-	{	
-		board[i+1][j]=1;
-		board[i][j] =0;// eliminated
-		board[i-1][j] =0;//moved
-		return true;
-	}
-	else
+	switch(id)
 	{
-		return false;
+		case 0: {
+					if ((r>1)&&(board[r-2][c]==0)&&(board[r-1][c]==1)&&(board[r][c]==1)) // last check might be redundant but be safe
+					{
+						return true;
+						break;
+					}else
+					{
+						//cout <<"Invalid move \n";
+						return false;
+						break;
+					}
+				}
+		case 1: {
+					if((c<5)&&(board[r][c+2]==0)&&(board[r][c+1]==1)&&(board[r][c]==1))
+					{
+						return true;
+						break;
+					}else
+					{
+						//cout <<"Invalid move \n";
+						return false;
+						break;
+					}
+				}
+		case 2: {
+					if((c>1)&&(board[r][c-2]==0)&&(board[r][c-1]==1)&&(board[r][c]==1))
+					{
+						return true;
+						break;
+					}else
+					{
+						//cout <<"Invalid move \n";
+						return false;
+						break;
+					}
+				}
+		case 3: {
+					if((c>1)&&(board[r][c-2]==0)&&(board[r][c-1]==1)&&(board[r][c]==1))
+					{
+						return true;
+						break;
+					}else
+					{
+						//cout <<"Invalid move \n";
+						return false;
+						break;
+					}
+				}
+		default:{	
+					std::cout<<"Invalid ID \n";
+					return false;
+					break;
+				}
 	}
 }
+
 int GameBoard::numPegs()
 {
 	int count=0;

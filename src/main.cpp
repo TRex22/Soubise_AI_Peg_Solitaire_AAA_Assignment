@@ -12,9 +12,6 @@ Jason Chalom 711985
 
     NEW Evan
     =====
-    1. makeMove(moveID, i, j) must update state and return t/f. Take in 0,1,2,3 for each kind of move
-    2. checkIfMoveValid
-    3. fix all move checks
     4. check if found solution
 
 
@@ -131,84 +128,43 @@ void process_args(int argc, char *argv[])
             halt_execution();
         }         
 
-        if(contains_string(str, "rf") || contains_string(str, "run_full"))
+        if(contains_string(str, "-rf") || contains_string(str, "run_full"))
         {
           	gb.euroConfig_Start();
     		gb.printBoard();
         }  
 
-        if(contains_string(str, "rr") || contains_string(str, "run_rand") || contains_string(str, "runr"))
+        if(contains_string(str, "-rr") || contains_string(str, "run_rand") || contains_string(str, "runr"))
         {
             gb.euroConfig_Random();
     		gb.printBoard();
         }
 
-        if(contains_string(str, "rb") || contains_string(str, "run_back") || contains_string(str, "runb"))
+        if(contains_string(str, "-rb") || contains_string(str, "run_back") || contains_string(str, "runb"))
         {
             run_backtracking();
         }
 
         if(contains_string(str, "-m") || contains_string(str, "manual"))
         {
-          	string inst="";
-          	int i=0,j =0;
-          	cin>>i;
-	        cin>>j;
-	        cin>>inst;// L,R,U,D
-          	while((i!=-1)||(j!=-1))
+
+          	int id =0;
+          	int x=0;
+          	int y=0;
+          	cin >> id;
+          	while(id!=-1)
           	{
-          		if(inst=="L")
-          		{
-		          	bool responce =gb.jumpLeft(i,j);
-		          	if (!responce)
-		          	{
-		          		cout<< "Invalid move\n";
-		          	}else
-		          	{
-		          		cout<<"Remaining Pegs: "<<gb.numPegs()<<'\n';
-		          		gb.printBoard();
-		          	}
-	         	}else if(inst=="R")
-	         	{
-	         		bool responce =gb.jumpRight(i,j);
-		          	if (!responce)
-		          	{
-		          		cout<< "Invalid move\n";
-		          	}else
-		          	{
-		          		cout<<"Remaining Pegs: "<<gb.numPegs()<<'\n';
-		          		gb.printBoard();
-		          	}
-	         	}else if(inst=="U")
-	         	{
-	         		bool responce =gb.jumpUp(i,j);
-		          	if (!responce)
-		          	{
-		          		cout<< "Invalid move\n";
-		          	}else
-		          	{
-		          		cout<<"Remaining Pegs: "<<gb.numPegs()<<'\n';
-		          		gb.printBoard();
-		          	}
-	         	}else if(inst=="D")
-	         	{
-	         		bool responce =gb.jumpDown(i,j);
-		          	if (!responce)
-		          	{
-		          		cout<< "Invalid move\n";
-		          	}else
-		          	{
-		          		cout<<"Remaining Pegs: "<<gb.numPegs()<<'\n';
-		          		gb.printBoard();
-		          	}
-	         	}else
-	         	{
-	         		cout<<"invalid direction. Use 'L,R,D,U'\n";
-	         	}
-	          	cin>>i;
-	          	cin>>j;
-	          	cin>>inst;
-	      	}
+	          	cin >> x;
+	          	cin >> y;
+	          	if(gb.checkIfMoveValid(id,x,y))
+	          	{
+	          		cout<<gb.makeMove(id,x,y)<<'\n';
+	          	}
+	          	gb.printBoard();
+	          	cout<<"Num Pegs:"<<gb.numPegs()<<'\n';
+	          	cin>>id;
+          	}
+	      	
         }
 
     }

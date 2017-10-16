@@ -26,7 +26,7 @@ GameBoard backtracking_recursive(GameBoard start, GameBoard prev, std::vector<st
 			upCopy.copy(start);
 			int upPegs = upCopy.numPegs();
 			cout<<"i: "<<peg[0]<<" j:"<<peg[1]<<" num pegs: "<<start.numPegs()<<" "<<upCopy.numPegs()<<std::endl;
-			upCopy.jumpUp(peg[0], peg[1]);
+			//upCopy.jumpUp(peg[0], peg[1]);
 
 			if(upPegs < upCopy.numPegs())
 			{
@@ -49,7 +49,7 @@ GameBoard backtracking_recursive(GameBoard start, GameBoard prev, std::vector<st
 			GameBoard downCopy;
 			downCopy.copy(start);
 			int downPegs = downCopy.numPegs();
-			downCopy.jumpDown(peg[0], peg[1]);
+			//downCopy.jumpDown(peg[0], peg[1]);
 
 			if(downPegs < downCopy.numPegs())
 			{
@@ -73,7 +73,7 @@ GameBoard backtracking_recursive(GameBoard start, GameBoard prev, std::vector<st
 			GameBoard leftCopy;
 			leftCopy.copy(start);
 			int leftPegs = leftCopy.numPegs();
-			leftCopy.jumpLeft(peg[0], peg[1]);
+			//leftCopy.jumpLeft(peg[0], peg[1]);
 
 			if(leftPegs < leftCopy.numPegs())
 			{
@@ -97,7 +97,7 @@ GameBoard backtracking_recursive(GameBoard start, GameBoard prev, std::vector<st
 			GameBoard rightCopy;
 			rightCopy.copy(start);
 			int rightPegs = rightCopy.numPegs();
-			rightCopy.jumpRight(peg[0], peg[1]);
+			//rightCopy.jumpRight(peg[0], peg[1]);
 
 			if(rightPegs < rightCopy.numPegs())
 			{
