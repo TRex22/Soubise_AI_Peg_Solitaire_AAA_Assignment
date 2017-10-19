@@ -113,8 +113,8 @@ void run_backtracking()
         double start = omp_get_wtime();
 
         // Add what ever being timed here
-        gb_new = backtracking_recursive(gb_new, prev, path);
-
+        //gb_new = backtracking_recursive(gb_new, prev, path);
+		gb_new = backtracking_stack(gb_new);
         double time = omp_get_wtime() - start;
         gb_new.printBoard();
 
