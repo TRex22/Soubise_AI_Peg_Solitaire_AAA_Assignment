@@ -31,6 +31,8 @@ Jason Chalom 711985
 #include <chrono>
 #include "omp.h"
 
+#include "move_enum.h"
+#include "move.h"
 #include "helpers.h"
 #include "solitaire_board.h"
 #include "backtracking.cpp"
@@ -78,6 +80,18 @@ int main(int argc, char *argv[])
 void test()
 {
     cout<<"TESTS...."<<endl;
+
+    gb.euroConfig_Random();
+    GameBoard prev;
+    std::vector<std::vector<int>> path;
+    // gb = backtracking_recursive(gb, prev, path);
+    cout<<"Print before BT...."<<endl;
+    gb.printBoard();
+    // cout<<"after...."<<endl;
+    gb = backtracking_stack(gb);
+
+    cout<<"Result: "<<endl;
+    gb.printBoard();
 }
 
 void run_backtracking()
@@ -91,17 +105,18 @@ void run_backtracking()
     for (int i = 1; i <= 1000; i=i+100)
     {
         int amount = i;
-        gb.euroConfig_Random();
-        gb.printBoard();
+        GameBoard gb_new(amount);
+        gb_new.euroConfig_Random();
+        gb_new.printBoard();
         GameBoard prev;
         std::vector<std::vector<int>> path;
         double start = omp_get_wtime();
 
         // Add what ever being timed here
-        gb = backtracking_recursive(gb, prev, path);
+        gb_new = backtracking_recursive(gb_new, prev, path);
 
         double time = omp_get_wtime() - start;
-        gb.printBoard();
+        gb_new.printBoard();
 
 
         // Output results
@@ -126,7 +141,12 @@ void process_args(int argc, char *argv[])
         {
             print_usage(argv);
             halt_execution();
-        }         
+        }  
+
+        if(contains_string(str, "-t") || contains_string(str, "tests"))
+        {
+            test();
+        }       
 
         if(contains_string(str, "-rf") || contains_string(str, "run_full"))
         {

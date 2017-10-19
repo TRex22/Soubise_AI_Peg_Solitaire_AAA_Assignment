@@ -33,7 +33,7 @@ class GameBoard
 	
 	public:
 		/*varibles*/
-		std::vector<std::vector<int> > board;
+		std::vector<std::vector<int>> board;
 
 		/*Functions*/
 		int getRow();
@@ -42,6 +42,8 @@ class GameBoard
 		void setCol(int c);
 
 		GameBoard();
+		GameBoard(int num_pegs);
+
 		void printBoard();
 		void euroConfig_Start();
 		void euroConfig_Random();
@@ -51,6 +53,11 @@ class GameBoard
 		bool checkIfMoveValid(int id,int r,int c);
 		std::vector<std::vector<int>> getPegs();
 		void copy(GameBoard gb);
+		bool equals(GameBoard gb);
+
+		std::vector<Move> getMoves(std::vector<Move> path);
+		bool checkGameEnd();
+		bool checkGameEnd2();
 
 };
 
@@ -109,6 +116,61 @@ GameBoard::GameBoard()// default empty board
 	}
 
 }
+
+GameBoard::GameBoard(int num_pegs)
+{
+	setRow(row);
+	setCol(col);
+
+	//init rows of board
+	for (int i = 0; i < getRow(); ++i)
+	{
+		std::vector<int> row;
+		for (int j = 0; j < getCol(); ++j)
+		{
+			if ((i==0)||(i==6))
+			{
+				if ((j>=2)&&(j<=4))
+				{
+					row.push_back(0);
+				}else
+				{
+					row.push_back(-1);
+				}
+			}else if ((i==1)||(i==5))
+			{
+				if ((j>=1)&&(j<=5))
+				{
+					row.push_back(0);
+				}else
+				{
+					row.push_back(-1);
+				}
+			}else
+			{
+				row.push_back(0);
+			}
+		}
+		board.push_back(row);
+	}
+
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_int_distribution<int> row_distribution(0,row);
+
+	std::random_device rd2;
+	std::mt19937 mt2(rd2());
+	std::uniform_int_distribution<int> col_distribution(0,col);
+
+	for (int i=0; i<num_pegs; i++)
+	{
+		int rnd_row = row_distribution(mt);
+		int rnd_col = col_distribution(mt2);
+
+		board[rnd_row][rnd_col]=1;
+	}
+}
+
 void GameBoard::euroConfig_Start()//------Standard Configuration config
 {
 	for (int i = 0; i < (int) board.size(); ++i)
@@ -144,7 +206,6 @@ void GameBoard::euroConfig_Random()
 	std::mt19937 mt(rd());
 	std::uniform_int_distribution<int> distribution(1,100);
 	 
-	cout<<'\n';
 	for (int i = 0; i < (int) board.size(); ++i)
 	{
 		for (int j = 0; j <(int) board[i].size(); ++j)
@@ -155,9 +216,7 @@ void GameBoard::euroConfig_Random()
 			board[i][j]=randNum%2;
 			}
 		}
-		cout<<'\n';
 	}
-	cout<<'\n';
 }
 
 bool GameBoard::makeMove(int id,int r, int c)
@@ -168,6 +227,7 @@ bool GameBoard::makeMove(int id,int r, int c)
 					board[r][c]=0;
 					board[r-1][c]=0;
 					board[r-2][c]=1;
+					cout<<"Made move"<<std::endl;
 					return true;
 					break;					
 				}
@@ -175,6 +235,7 @@ bool GameBoard::makeMove(int id,int r, int c)
 					board[r][c] = 0;
 					board[r][c+1] = 0;
 					board[r][c+2] = 1;
+					cout<<"Made move"<<std::endl;
 					return true;
 					break;
 				}
@@ -182,6 +243,7 @@ bool GameBoard::makeMove(int id,int r, int c)
 					board[r][c]=0;
 					board[r+1][c]=0;
 					board[r+2][c]=1;
+					cout<<"Made move"<<std::endl;
 					return true;
 					break;					
 				}
@@ -189,6 +251,7 @@ bool GameBoard::makeMove(int id,int r, int c)
 					board[r][c] = 0;
 					board[r][c-1] = 0;
 					board[r][c-2] = 1;
+					cout<<"Made move"<<std::endl;
 					return true;
 					break;
 				}
@@ -201,11 +264,11 @@ bool GameBoard::makeMove(int id,int r, int c)
 	}
 
 }
-bool GameBoard::checkIfMoveValid(int id,int r,int c)
+bool GameBoard::checkIfMoveValid(int id, int r,int c)
 {
 	switch(id)
-	{
-		case 0: {
+	{	
+		case 0: {	//up
 					if ((r>1)&&(board[r-2][c]==0)&&(board[r-1][c]==1)&&(board[r][c]==1)) // last check might be redundant but be safe
 					{
 						return true;
@@ -217,7 +280,7 @@ bool GameBoard::checkIfMoveValid(int id,int r,int c)
 						break;
 					}
 				}
-		case 1: {
+		case 1: {//right
 					if((c<5)&&(board[r][c+2]==0)&&(board[r][c+1]==1)&&(board[r][c]==1))
 					{
 						return true;
@@ -229,8 +292,8 @@ bool GameBoard::checkIfMoveValid(int id,int r,int c)
 						break;
 					}
 				}
-		case 2: {
-					if((c>1)&&(board[r][c-2]==0)&&(board[r][c-1]==1)&&(board[r][c]==1))
+		case 2: {//down
+					if((r<5)&&(board[r+2][c]==0)&&(board[r+1][c]==1)&&(board[r][c]==1))
 					{
 						return true;
 						break;
@@ -241,7 +304,7 @@ bool GameBoard::checkIfMoveValid(int id,int r,int c)
 						break;
 					}
 				}
-		case 3: {
+		case 3: {//left
 					if((c>1)&&(board[r][c-2]==0)&&(board[r][c-1]==1)&&(board[r][c]==1))
 					{
 						return true;
@@ -283,7 +346,7 @@ int GameBoard::numMoves()
 	return numMoves;
 }
 
-std::vector<std::vector<int>> GameBoard::getPegs()
+std::vector<std::vector<int>> GameBoard::getPegs()//point->x,y
 {
 	std::vector<std::vector<int>> pegs;
 	for(int i = 0; i < row; i++)
@@ -303,7 +366,115 @@ std::vector<std::vector<int>> GameBoard::getPegs()
 	return pegs;
 }
 
+std::vector<Move> GameBoard::getMoves(std::vector<Move> path)// pos of 1's
+{
+	for (int i=0; i<row; i++)
+	{
+		for (int j=0; j<col; j++)
+		{
+			//cout<<"PRE"<<std::endl;
+			if(board[i][j] == 1)//should check agaisnt 1. If peg is there then it can possibly move in the directions
+			{
+				int id = 0;
+				Move possible_move_up(id, i, j);
+				path.push_back(possible_move_up);
+				//cout<<"up: "<<i<<" "<<j<<std::endl;
+
+				id = 2;
+				Move possible_move_down(id, i, j);
+				path.push_back(possible_move_down);
+				//cout<<"down: "<<i<<" "<<j<<std::endl;
+
+				id = 3;
+				Move possible_move_left(id, i, j);
+				path.push_back(possible_move_left);
+				//cout<<"left: "<<i<<" "<<j<<std::endl;
+
+				id = 1;
+				Move possible_move_right(id, i, j);
+				path.push_back(possible_move_right);
+				//cout<<"right: "<<i<<" "<<j<<std::endl;
+			}
+		}
+	}
+
+	return path;
+}
+
 void GameBoard::copy(GameBoard gb)
 {
 	this->board = gb.board;
+}
+
+bool GameBoard::equals(GameBoard gb)
+{
+	bool isEqual = true;
+	if(this->board.size() != gb.board.size())
+		return false;
+
+	for (int i=0; i < this->board.size(); i++)
+	{
+		if(this->board[i].size() != gb.board[i].size())
+			return false;
+
+		isEqual = std::equal(this->board[i].begin(), this->board[i].end(), gb.board[i].begin());
+		if(isEqual == false)
+			return false;
+	}
+
+	return isEqual;
+}
+
+bool GameBoard::checkGameEnd()
+{
+	//this->board against temp->board
+	//finished if one peg left or no more possiblke moves.// same thing
+	std::vector<std::vector<int>> pegs = this->getPegs();
+
+	for (int i = 0; i < row; i++)
+	{
+		for (int j = 0; j < col; j++)
+		{
+			if(i > 1)
+				if(pegs[i-1][j] == 1 && pegs[i-2][j] == 0)
+					return false;
+
+			if(i < row-1)
+				if(pegs[i+1][j] == 1 && pegs[i+2][j] == 0)
+					return false;
+		
+			if(j > 1)
+				if(pegs[i][j-1] == 1 && pegs[i][j-2] == 0)
+					return false;
+
+			if(j < col-1)
+				if(pegs[i][j+1] == 1 && pegs[i][j+2] == 0)
+					return false;
+		}
+	}
+
+	return true;
+}
+bool GameBoard::checkGameEnd2()
+{
+	std::vector<std::vector<int>> pegs = this->getPegs();
+	for (int i = 0; i < pegs.size(); ++i)//for each peg
+	{
+		if(pegs[i][0]>0)//can check up
+			if (board[pegs[i][0]-1][pegs[i][1]]==1)
+				return false;
+
+		if(pegs[i][0]<6)//can check down
+			if (board[pegs[i][0]+1][pegs[i][1]]==1)
+				return false;
+
+		if(pegs[i][1]>0)//can check left
+			if (board[pegs[i][0]][pegs[i][1]-1]==1)
+				return false;
+
+		if(pegs[i][1]<6)//can check right
+			if (board[pegs[i][0]][pegs[i][1]+1]==1)
+				return false;
+	}
+	return true;
 }
