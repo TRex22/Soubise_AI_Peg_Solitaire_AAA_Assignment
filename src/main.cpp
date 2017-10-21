@@ -12,12 +12,11 @@ Jason Chalom 711985
 
     NEW Evan
     =====
-    4. check if found solution
+    !. CLEAN CODE.Too many commented out code. delete and comment properly
 
 
     Json:
     =====
-    1. Stack based backtracking
     3. visualization
     4. latex
 */
@@ -79,19 +78,22 @@ int main(int argc, char *argv[])
 
 void test()
 {
-    cout<<"TESTS...."<<endl;
-
-    gb.euroConfig_Random();
-    GameBoard prev;
-    std::vector<std::vector<int>> path;
+	int i=0;
+	cout<<"TESTS...."<<endl;
+    //gb.euroConfig_Random();
+    GameBoard gb_new(5);
+    //std::vector<std::vector<int>> path;
     // gb = backtracking_recursive(gb, prev, path);
-    cout<<"Print before BT...."<<endl;
-    gb.printBoard();
+    //cout<<"Print before BT...."<<endl;
+    //gb.printBoard();
     // cout<<"after...."<<endl;
-    gb = backtracking_stack(gb);
+    //gb = backtracking_stack(gb);
 
     cout<<"Result: "<<endl;
-    gb.printBoard();
+    gb_new.printBoard();
+    //i=i+1;
+    //cout<< "I: "<<i<<std::endl;
+    
 }
 
 void run_backtracking()

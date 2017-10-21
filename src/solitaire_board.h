@@ -156,18 +156,34 @@ GameBoard::GameBoard(int num_pegs)
 
 	std::random_device rd;
 	std::mt19937 mt(rd());
-	std::uniform_int_distribution<int> row_distribution(0,row);
+	std::uniform_int_distribution<int> row_distribution(0,row-1);
 
 	std::random_device rd2;
 	std::mt19937 mt2(rd2());
-	std::uniform_int_distribution<int> col_distribution(0,col);
-
+	std::uniform_int_distribution<int> col_distribution(0,col-1);
 	for (int i=0; i<num_pegs; i++)
 	{
 		int rnd_row = row_distribution(mt);
 		int rnd_col = col_distribution(mt2);
-
+		//cout<<"I:"<<i<<std::endl<<"Row:"<<rnd_row<<std::endl<<"Col:"<<rnd_col<<std::endl;
+		bool flag = false;
+		while(!flag)
+		{
+			if(board[rnd_row][rnd_col]==0)
+			{
+				//cout<<"In if"<<std::endl;
+				flag == true;
+				break;
+			}else
+			{
+				//cout<<"In else"<<std::endl;
+				rnd_row = row_distribution(mt);
+				rnd_col = col_distribution(mt2);
+				//cout<<"New Row:"<<rnd_row<<std::endl<<"New Col:"<<rnd_col<<std::endl;
+			}
+		}
 		board[rnd_row][rnd_col]=1;
+		//cout<<"Added at Row:"<<rnd_row<<" Col:"<<rnd_col<<std::endl;
 	}
 }
 
@@ -227,7 +243,7 @@ bool GameBoard::makeMove(int id,int r, int c)
 					board[r][c]=0;
 					board[r-1][c]=0;
 					board[r-2][c]=1;
-					cout<<"Made move"<<std::endl;
+					//cout<<"Made move"<<std::endl;
 					return true;
 					break;					
 				}
@@ -235,7 +251,7 @@ bool GameBoard::makeMove(int id,int r, int c)
 					board[r][c] = 0;
 					board[r][c+1] = 0;
 					board[r][c+2] = 1;
-					cout<<"Made move"<<std::endl;
+					//cout<<"Made move"<<std::endl;
 					return true;
 					break;
 				}
@@ -243,7 +259,7 @@ bool GameBoard::makeMove(int id,int r, int c)
 					board[r][c]=0;
 					board[r+1][c]=0;
 					board[r+2][c]=1;
-					cout<<"Made move"<<std::endl;
+					//cout<<"Made move"<<std::endl;
 					return true;
 					break;					
 				}
@@ -251,7 +267,7 @@ bool GameBoard::makeMove(int id,int r, int c)
 					board[r][c] = 0;
 					board[r][c-1] = 0;
 					board[r][c-2] = 1;
-					cout<<"Made move"<<std::endl;
+					//cout<<"Made move"<<std::endl;
 					return true;
 					break;
 				}
