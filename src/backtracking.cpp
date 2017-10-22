@@ -36,11 +36,5 @@ GameBoard backtracking_stack(GameBoard start)
 		//cout<<current.checkGameEnd2()<<std::endl;
 	}
 
-	return current;// SHOULD BE CURRENT!!!!!
+	return current;
 }
-
-GameBoard backtracking_recursive(GameBoard start, GameBoard prev, std::vector<std::vector<int>> path)
-{
-	return start;
-}
-

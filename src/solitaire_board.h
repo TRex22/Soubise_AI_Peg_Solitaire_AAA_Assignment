@@ -166,13 +166,11 @@ GameBoard::GameBoard(int num_pegs)
 		int rnd_row = row_distribution(mt);
 		int rnd_col = col_distribution(mt2);
 		//cout<<"I:"<<i<<std::endl<<"Row:"<<rnd_row<<std::endl<<"Col:"<<rnd_col<<std::endl;
-		bool flag = false;
-		while(!flag)
+		while(true)
 		{
 			if(board[rnd_row][rnd_col]==0)
 			{
 				//cout<<"In if"<<std::endl;
-				flag == true;
 				break;
 			}else
 			{
@@ -428,7 +426,7 @@ bool GameBoard::equals(GameBoard gb)
 	if(this->board.size() != gb.board.size())
 		return false;
 
-	for (int i=0; i < this->board.size(); i++)
+	for (int i=0; i < row; i++)
 	{
 		if(this->board[i].size() != gb.board[i].size())
 			return false;
@@ -474,7 +472,7 @@ bool GameBoard::checkGameEnd()
 bool GameBoard::checkGameEnd2()
 {
 	std::vector<std::vector<int>> pegs = this->getPegs();
-	for (int i = 0; i < pegs.size(); ++i)//for each peg
+	for (int i = 0; i < (int) pegs.size(); ++i)//for each peg
 	{
 		if(pegs[i][0]>0)//can check up
 			if (board[pegs[i][0]-1][pegs[i][1]]==1)

@@ -78,10 +78,9 @@ int main(int argc, char *argv[])
 
 void test()
 {
-	int i=0;
 	cout<<"TESTS...."<<endl;
     //gb.euroConfig_Random();
-    GameBoard gb_new(5);
+    GameBoard gb_new(101);
     //std::vector<std::vector<int>> path;
     // gb = backtracking_recursive(gb, prev, path);
     //cout<<"Print before BT...."<<endl;
@@ -104,13 +103,12 @@ void run_backtracking()
     double total_start = omp_get_wtime();
     
     // increment number of experiments
-    for (int i = 1; i <= 1000; i=i+100)
+    for (int i = 1; i <= 37; i=i+1)
     {
-        int amount = i;
+        int amount = i;//redundant?
         GameBoard gb_new(amount);
-        gb_new.euroConfig_Random();
-        gb_new.printBoard();
-        GameBoard prev;
+        //gb_new.euroConfig_Random();
+        //gb_new.printBoard();
         std::vector<std::vector<int>> path;
         double start = omp_get_wtime();
 
@@ -118,7 +116,7 @@ void run_backtracking()
         //gb_new = backtracking_recursive(gb_new, prev, path);
 		gb_new = backtracking_stack(gb_new);
         double time = omp_get_wtime() - start;
-        gb_new.printBoard();
+        //gb_new.printBoard();
 
 
         // Output results
@@ -126,8 +124,10 @@ void run_backtracking()
 
         // print file line
         ostringstream out;
+        //cout<<"Printing"<<std::endl;
         out << amount << "," << path.size() << "," << time << endl; 
         write_results_to_file(results1_location, out.str());
+        //cout<<"Printed"<<std::endl;
     }
 
     double total_time = omp_get_wtime() - total_start;    
