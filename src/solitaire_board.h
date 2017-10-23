@@ -47,13 +47,15 @@ class GameBoard
 
 		void euroConfig_Start();
 		void euroConfig_Random();
-		bool makeMove(int id,int r, int c);
+		bool makeMove(int id, int r, int c);
 		bool checkIfMoveValid(int id,int r,int c);
 
 		void copy(GameBoard gb);
 		bool equals(GameBoard gb);
 		std::vector<Move> getMoves(std::vector<Move> path);
 		bool checkGameEnd();
+
+		bool makeReverseMove(int id, int r, int c);
 
 };
 
@@ -459,4 +461,49 @@ bool GameBoard::checkGameEnd()//Checks the 4 positions (above, below, to the lef
 				return false;
 	}
 	return true;
+}
+
+bool GameBoard::makeReverseMove(int id, int r, int c)
+{
+	switch(id)
+	{
+		case 0:	{// up
+					board[r][c]=1;
+					board[r-1][c]=1;
+					board[r-2][c]=0;
+					//cout<<"Made move"<<std::endl;
+					return true;
+					break;					
+				}
+		case 1:	{//right
+					board[r][c] = 1;
+					board[r][c+1] = 1;
+					board[r][c+2] = 0;
+					//cout<<"Made move"<<std::endl;
+					return true;
+					break;
+				}
+		case 2:	{// down
+					board[r][c]=1;
+					board[r+1][c]=1;
+					board[r+2][c]=0;
+					//cout<<"Made move"<<std::endl;
+					return true;
+					break;					
+				}
+		case 3:	{//left
+					board[r][c] = 1;
+					board[r][c-1] = 1;
+					board[r][c-2] = 0;
+					//cout<<"Made move"<<std::endl;
+					return true;
+					break;
+				}
+		default:{	
+					std::cout<<"Invalid ID \n";
+					return false;
+					break;
+				}
+				
+	}
 }

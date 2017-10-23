@@ -40,6 +40,8 @@ Jason Chalom 711985
 #define app_name "COMS3005 Assignment 2017"
 #define results1_header "amount,number_denominations,time"
 #define results1_location "./results/results_exp1.csv"
+#define results2_header "amount,number_denominations,time,found"
+#define results2_location "./results/results_exp2_recurse.csv"
 GameBoard gb;
 bool DEBUG = 0;
 
@@ -48,6 +50,7 @@ bool DEBUG = 0;
 int main(int argc, char *argv[]);
 void test();
 void run_backtracking();
+void run_recursive_backtracking();
 void process_args(int argc, char *argv[]);
 
 
@@ -105,7 +108,7 @@ void run_backtracking()
         double start = omp_get_wtime();
 
         // Add what ever being timed here
-		gb_new = backtracking_stack(gb_new,path);
+		gb_new = backtracking_stack(gb_new, path);
         double time = omp_get_wtime() - start;
         if (DEBUG)
         {
@@ -123,6 +126,54 @@ void run_backtracking()
         //cout<<"Printing"<<std::endl;
         out << amount << "," << path.size() << "," << time << endl; 
         write_results_to_file(results1_location, out.str());
+    }
+
+    double total_time = omp_get_wtime() - total_start;    
+    cout << "\n\ntotal time: " << total_time << " seconds." << endl;
+}
+
+void run_recursive_backtracking()
+{
+    cout << "Running experiment 2 (recursive)...\n\n";
+    write_results_to_file(results2_location, results2_header, "");
+    
+    double total_start = omp_get_wtime();
+    
+    GameBoard final;
+    final.board[3][3] = 1; //final peg
+
+    // increment number of experiments
+    for (int i = 1; i <= 37; i=i+1)
+    {
+        int amount = i;//redundant?
+        GameBoard gb_new(amount);
+        if (DEBUG)
+        {
+            cout<<"Start State:"<<std::endl;
+            gb_new.printBoard();
+        }
+
+        std::vector<Move> path;
+        double start = omp_get_wtime();
+
+        // Add what ever being timed here
+        bool found = backtracking_recursive(gb_new, final, path);
+        
+        double time = omp_get_wtime() - start;
+        if (DEBUG)
+        {
+            cout<<"End State:"<<std::endl;
+            gb_new.printBoard();
+        }
+
+        // Output results
+        cout << "amount: " << amount << " path_length: " << path.size() << " Found: " << found << " time: " << time << endl << endl;
+
+        // print file line
+        ostringstream out;
+        //cout<<"Printing"<<std::endl;
+        out << amount << "," << path.size() << "," << time << found << endl; 
+        write_results_to_file(results2_location, out.str());
     }
 
     double total_time = omp_get_wtime() - total_start;    
@@ -160,6 +211,11 @@ void process_args(int argc, char *argv[])
         if(contains_string(str, "-rb") || contains_string(str, "run_back") || contains_string(str, "runb"))
         {
             run_backtracking();
+        }
+
+        if(contains_string(str, "-recurse"))
+        {
+            run_recursive_backtracking();
         }
 
         if(contains_string(str, "-m") || contains_string(str, "manual"))
