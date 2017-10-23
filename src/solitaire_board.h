@@ -360,7 +360,7 @@ int GameBoard::numMoves()
 	return numMoves;
 }
 
-std::vector<std::vector<int>> GameBoard::getPegs()//point->x,y
+std::vector<std::vector<int>> GameBoard::getPegs()//point->x,y//get[0][0]=x,peg[0][1]=y
 {
 	std::vector<std::vector<int>> pegs;
 	for(int i = 0; i < row; i++)

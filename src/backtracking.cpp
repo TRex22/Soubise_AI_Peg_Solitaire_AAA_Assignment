@@ -1,4 +1,4 @@
-GameBoard backtracking_stack(GameBoard start)
+GameBoard backtracking_stack(GameBoard start,vector<vector<int>> &outPath)
 {
 	GameBoard prev;
 	GameBoard current;
@@ -25,6 +25,12 @@ GameBoard backtracking_stack(GameBoard start)
 			//cout<<"TEST VALID"<<std::endl;
 			prev.copy(current);
 			current.makeMove(mov.id, mov.r, mov.c);
+
+			std::vector<int> coord;
+			coord.push_back(mov.r);
+			coord.push_back(mov.c);
+			outPath.push_back(coord);
+
 			path = current.getMoves(path);
 			//cout<<"finished"<<std::endl;
 		}
