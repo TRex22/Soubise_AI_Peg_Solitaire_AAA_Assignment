@@ -12,7 +12,6 @@ Jason Chalom 711985
 
     NEW Evan
     =====
-    !. CLEAN CODE.Too many commented out code. delete and comment properly
 
 
     Json:
@@ -42,7 +41,7 @@ Jason Chalom 711985
 #define results1_header "amount,number_denominations,time"
 #define results1_location "./results/results_exp1.csv"
 GameBoard gb;
-bool DEBUG = 1;
+bool DEBUG = 0;
 
 
 /* Headers */
@@ -79,20 +78,9 @@ int main(int argc, char *argv[])
 void test()
 {
 	cout<<"TESTS...."<<endl;
-    //gb.euroConfig_Random();
     GameBoard gb_new(101);
-    //std::vector<std::vector<int>> path;
-    // gb = backtracking_recursive(gb, prev, path);
-    //cout<<"Print before BT...."<<endl;
-    //gb.printBoard();
-    // cout<<"after...."<<endl;
-    //gb = backtracking_stack(gb);
-
     cout<<"Result: "<<endl;
-    gb_new.printBoard();
-    //i=i+1;
-    //cout<< "I: "<<i<<std::endl;
-    
+    gb_new.printBoard();    
 }
 
 void run_backtracking()
@@ -107,16 +95,24 @@ void run_backtracking()
     {
         int amount = i;//redundant?
         GameBoard gb_new(amount);
-        //gb_new.euroConfig_Random();
-        //gb_new.printBoard();
+        if (DEBUG)
+        {
+        	cout<<"Start State:"<<std::endl;
+        	gb_new.printBoard();
+        }
+
         std::vector<std::vector<int>> path;
         double start = omp_get_wtime();
 
         // Add what ever being timed here
-        //gb_new = backtracking_recursive(gb_new, prev, path);
 		gb_new = backtracking_stack(gb_new,path);
         double time = omp_get_wtime() - start;
-        //gb_new.printBoard();
+        if (DEBUG)
+        {
+        	cout<<"End State:"<<std::endl;
+        	gb_new.printBoard();
+        }
+
 
 
         // Output results
@@ -127,7 +123,6 @@ void run_backtracking()
         //cout<<"Printing"<<std::endl;
         out << amount << "," << path.size() << "," << time << endl; 
         write_results_to_file(results1_location, out.str());
-        //cout<<"Printed"<<std::endl;
     }
 
     double total_time = omp_get_wtime() - total_start;    
