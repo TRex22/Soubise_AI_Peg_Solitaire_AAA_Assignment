@@ -89,18 +89,38 @@
 The purpose of the assignment is to implement and analyse a version of the Peg Solitaire game and the backtracking algorithm (to play the game).
 
 \section{Background}
-% cite the wayback machine??
-The backtracking algorithm is similar to a brute force approach to finding solutions to problems but is more systematic. It attempts to follow a logical series of decisions in solving these problems and when a block state occurs the algorithm 'backtracks' to previous decisions and chooses different paths until a terminal (complete) state is reached. The full set of soultions to a problem can be found by continuing to run the algorithm until all paths have been searched but that is not always necessary.
+Peg Solitaire is a board game which has a number of holes that can be filled with pegs. We have chosen to use the European style of board which has extra positions on the board \ref{board}. In this style most of a grid has peg holes excluding three per corner. The aim of the game is to remove pegs until only one peg remains. This is the position one row directly above the central peg, a row above that and the left most peg in the top row. Moves are made when pegs jump over a peg and are placed in an open position. Then peg which is jumped over is then removed. This move can happen in both horizontal and vertical directions. In the European variant, the game has three possible optimal terminal states. Its is possible to hit sub-optimal states where there are more pegs left on the board but no possible moves left \cite{harder}. 
 
-\subsection{Recurisve Algorithm}
+% Have example moves and suboptimal states?
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1.0\textwidth,scale=1.0]{images/recursive_algorithm}
-	\caption{Recurisve Algorithm \cite{lab5}}
+	\label{board}
+	\includegraphics[width=.50\textwidth,scale=.50]{images/board}
+	\caption{Diagram of an European Peg Solitaire Board Where the
+				Black Squares Represent Peg Positions,
+				Green Are Terminal Positions,
+				Grey Are Not Positions and
+				White is the Central Pixel.
+			}
 \end{figure}
 
-\section{Implementation}
 
+% cite the wayback machine??
+\noindent The backtracking algorithm is similar to a brute force approach to finding solutions to problems but is more systematic. It attempts to follow a logical series of decisions in solving these problems and when a block state occurs the algorithm will backtrack to previous decisions and choose different paths until a terminal (complete) state is reached. The full set of solutions to a problem can be found by continuing to run the algorithm until all paths have been searched but that is not always necessary.
+
+\subsection{Recursive Algorithm}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.50\textwidth,scale=.50]{images/recursive_algorithm}
+	\caption{Recursive Algorithm \cite{lab5}}
+\end{figure}
+
+\subsection{Stack Based Algorithm}
+
+\section{Implementation}
+% Comment: Talk about OpenMP, Assumptions any special things ...
+% What data structures we used
+% etc...
 
 
 \section{Theoretical Analysis}
@@ -113,11 +133,23 @@ The backtracking algorithm is similar to a brute force approach to finding solut
 \section{Conclusion}
 
 \section{Group Member Contribution}
+\begin{table}[H]
+\centering
+\label{contribution}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Member}         & \textbf{Evan Bancroft 879192} & \textbf{Jason Chalom 711985} \\ \hline
+Game                    & 85\%                          & 15\%                         \\ \hline
+Back Tracking Algorithm & 50\%                          & 50\%                         \\ \hline
+Complexity Analysis     &                               &                              \\ \hline
+Report                  &                               &                              \\ \hline
+\end{tabular}
+\caption{Contributions of Group Members By Task}
+\end{table}
 
 \section*{Acknowledgements}
-I would like to Acknowledge the content and work from the Honours course Digital Image Processing (APPM4058A) lectured by Professor Sears. \\
 All drawn diagrams were drawn using \url{http://draw.io/} and charts were made with Libre Office.\\ 
-All the programming was done in python using NumPy and OpenCV libraries.\\
+All the programming was done in c++ using OpenMP for its timing functions.\\
 
 
 \bibliographystyle{plain}

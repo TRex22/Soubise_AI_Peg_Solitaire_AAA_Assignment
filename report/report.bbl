@@ -1,7 +1,13 @@
 \begin{thebibliography}{1}
 
+\bibitem{harder}
+Douglas~Wilhelm Harder.
+\newblock Peg solitaire.
+\newblock
+  \url{https://ece.uwaterloo.ca/~dwharder/aads/Algorithms/Backtracking/Peg_solitaire/}.
+
 \bibitem{lab5}
-"Charles~E. Leiserson".
+Charles~E. Leiserson.
 \newblock Lab 5: Backtracking search.
 \newblock \url{http://courses.csail.mit.edu/6.884/spring10/labs/lab5.pdf},
   2010.
