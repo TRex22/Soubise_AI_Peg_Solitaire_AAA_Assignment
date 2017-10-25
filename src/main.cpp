@@ -159,7 +159,7 @@ void run_recursive_backtracking()
         std::vector<Move> path;
         bool found = false;
         int end_state = 1;
-        double start =0.0, end = 0.0;
+        double start = 0.0, time = 0.0;
 
         GameBoard gb_new(amount);
         if (DEBUG)
@@ -176,6 +176,7 @@ void run_recursive_backtracking()
         if(found == false)
         {
             gb_new = GameBoard(amount);
+            path = std::vector<Move>();
             start = omp_get_wtime();
             // Add what ever being timed here
             found = backtracking_recursive(gb_new, final_2, path);
@@ -186,6 +187,7 @@ void run_recursive_backtracking()
         if(found == false)
         {
             gb_new = GameBoard(amount);
+            path = std::vector<Move>();
             start = omp_get_wtime();
             // Add what ever being timed here
             found = backtracking_recursive(gb_new, final_3, path);
