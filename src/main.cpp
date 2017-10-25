@@ -126,7 +126,7 @@ void run_stack_backtracking()
         // print file line
         ostringstream out;
         //cout<<"Printing"<<std::endl;
-        out << amount << "," << path.size() << "," << time << found << endl; 
+        out << amount << "," << path.size() << "," << time << "," <<  found << endl; 
         write_results_to_file(results1_location, out.str());
     }
 
