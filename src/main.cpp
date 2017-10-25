@@ -211,7 +211,7 @@ void run_recursive_backtracking()
         // print file line
         ostringstream out;
         //cout<<"Printing"<<std::endl;
-        out << amount << "," << path.size() << "," << time << found << end_state << endl; 
+        out << amount << "," << path.size() << "," << time << found << "," << end_state << endl; 
         write_results_to_file(results2_location, out.str());
     }
 
