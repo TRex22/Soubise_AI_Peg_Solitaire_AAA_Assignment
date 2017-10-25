@@ -29,7 +29,6 @@ Jason Chalom 711985
 #include <chrono>
 #include "omp.h"
 
-#include "move_enum.h"
 #include "move.h"
 #include "helpers.h"
 #include "solitaire_board.h"
@@ -49,6 +48,7 @@ bool DEBUG = 0;
 /* Headers */
 int main(int argc, char *argv[]);
 void test();
+void printPath(vector<vector<int>> path);
 void run_stack_backtracking();
 void run_recursive_backtracking();
 void process_args(int argc, char *argv[]);
@@ -81,9 +81,36 @@ int main(int argc, char *argv[])
 void test()
 {
 	cout<<"TESTS...."<<endl;
-    GameBoard gb_new(101);
+    GameBoard gb_new;
+    gb_new.board[2][2]=1;
+    gb_new.board[3][2]=1;
+    gb_new.board[4][3]=1;
+    gb_new.board[5][4]=1;
+    gb_new.board[3][5]=1;
     cout<<"Result: "<<endl;
-    gb_new.printBoard();    
+    gb_new.printBoard();
+
+    std::vector<std::vector<int>> path;
+    gb_new = backtracking_stack(gb_new, path);
+    if(gb_new.board[3][3]==1)
+    {
+        cout<<"YAY"<<std::endl;
+
+    }else{
+        cout<<":("<<std::endl;
+    }
+    gb_new.printBoard();
+    int numPegs=gb_new.numPegs(); 
+    cout << "amount: " << numPegs << " path_length: " << path.size() << endl << endl; 
+    printPath(path);  
+}
+
+void printPath(vector<vector<int>> path)
+{
+    for (int i = 0; i < (int)path.size(); ++i)
+    {
+        cout<<"I: "<<i<<'\t'<<"("<<path[i][2]<<","<<path[i][0]<<","<<path[i][1]<<")"<<std::endl;
+    }
 }
 
 void run_stack_backtracking()

@@ -223,6 +223,7 @@ int GameBoard::numMoves()//Total possible number of moves
 }
 
 std::vector<std::vector<int>> GameBoard::getPegs()//Retrieves the coordinates of the pegs. pegs[0][0]=r and pegs[0][1]=c of peg 0;
+													//pegs[0][2] is direction id
 {
 	std::vector<std::vector<int>> pegs;
 	for(int i = 0; i < row; i++)
@@ -234,6 +235,7 @@ std::vector<std::vector<int>> GameBoard::getPegs()//Retrieves the coordinates of
 				std::vector<int> coord;
 				coord.push_back(i);
 				coord.push_back(j);
+				coord.push_back(0);
 				pegs.push_back(coord);
 			}
 		}
@@ -241,7 +243,6 @@ std::vector<std::vector<int>> GameBoard::getPegs()//Retrieves the coordinates of
 
 	return pegs;
 }
-
 void GameBoard::euroConfig_Start()//Standard Configuration config
 									//36 1's , 1 0 and 12 (-1)'s
 {
