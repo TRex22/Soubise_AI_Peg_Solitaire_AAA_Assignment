@@ -16,31 +16,13 @@ MAIN_OUT = game
 TESTS = rules_uitest
 
 all: 
-	make clean
 	make main
-	# make test
-
-test:
-	# $(CXX) $(CPPFLAGS) -lgtest_main ./$(TEST_DIR)/$(TESTS).cpp -o ./$(TEST_DIR)/$(TESTS).o
-	# bash compile_and_run_tests.sh
 
 main:
 	mkdir -p bin
 	mkdir -p results
 	$(CXX) $(CPPFLAGS) ./src/$(MAIN) -o bin/$(MAIN_OUT).out $(CXXFLAGS)
-	# cp -rf data/* bin/
 
 clean :
 	rm -f bin/*
 	rm -f results/*
-
-	# rm -f tests/*.o
-	# rm -f tests/runTests 
-	# rm -f tests/cmake_install*
-	# rm -f tests/CMakeCache*
-	# rm -rf tests/CMakeFiles
-	# rm -f tests/*.json
-
-# gtest:
-# 	bash install_google_test.sh
-

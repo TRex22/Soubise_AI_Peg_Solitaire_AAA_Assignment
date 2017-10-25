@@ -9,6 +9,7 @@ GameBoard backtracking_stack(GameBoard start, vector<vector<int>> &outPath)
 	current.copy(start);
 
 	int numPegs = current.numPegs();
+	// !current.checkGameWin() && 
 	while(numPegs != 1 && path.size() != 0)
 	{
 		//play move pop off stack

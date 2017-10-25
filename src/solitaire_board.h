@@ -54,6 +54,7 @@ class GameBoard
 		bool equals(GameBoard gb);
 		std::vector<Move> getMoves(std::vector<Move> path);
 		bool checkGameEnd();
+		bool checkGameWin();
 
 		bool makeReverseMove(int id, int r, int c);
 
@@ -461,6 +462,28 @@ bool GameBoard::checkGameEnd()//Checks the 4 positions (above, below, to the lef
 				return false;
 	}
 	return true;
+}
+
+bool GameBoard::checkGameWin()
+{
+	std::vector<std::vector<int>> pegs = this->getPegs();
+
+	// end states for European
+    // 3:   0,2
+    //      1,3
+    //      2,3
+	bool state1 = pegs.size() == 1 && this->board[0][2] == 1;
+	bool state2 = pegs.size() == 1 && this->board[1][3] == 1;
+	bool state3 = pegs.size() == 1 && this->board[2][3] == 1;
+
+	// cout<<"State 1: " <<state1<<"State 2: " <<state2<<"State 3: " <<state3<<endl;
+
+	if(state1 || state2 || state3)
+	{
+		return true;
+	}
+
+	return false;
 }
 
 bool GameBoard::makeReverseMove(int id, int r, int c)

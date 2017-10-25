@@ -620,7 +620,8 @@ void print_usage(char *argv[])
     printf("usage: %s -rr -m\n", argv[0]);
     printf("Random state -rr\n");
     printf("Full state -rf\n");
-    printf("Run Backtracking -rb\n");
+    printf("Run Stacked Based Backtracking -rb\n");
+    printf("Run Recursive Backtracking -recurse\n");
     printf("Manual -r\n");
     printf("Help -h\n");
 }

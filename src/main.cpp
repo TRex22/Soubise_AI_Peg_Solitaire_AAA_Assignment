@@ -38,8 +38,8 @@ Jason Chalom 711985
 
 /* Global variables */
 #define app_name "COMS3005 Assignment 2017"
-#define results1_header "amount,number_denominations,time"
-#define results1_location "./results/results_exp1.csv"
+#define results1_header "amount,number_denominations,time,found"
+#define results1_location "./results/results_exp1_stack.csv"
 #define results2_header "amount,number_denominations,time,found,end state"
 #define results2_location "./results/results_exp2_recurse.csv"
 GameBoard gb;
@@ -49,7 +49,7 @@ bool DEBUG = 0;
 /* Headers */
 int main(int argc, char *argv[]);
 void test();
-void run_backtracking();
+void run_stack_backtracking();
 void run_recursive_backtracking();
 void process_args(int argc, char *argv[]);
 
@@ -86,7 +86,7 @@ void test()
     gb_new.printBoard();    
 }
 
-void run_backtracking()
+void run_stack_backtracking()
 {
     cout << "Running experiment 1...\n\n";
     write_results_to_file(results1_location, results1_header, "");
@@ -110,6 +110,8 @@ void run_backtracking()
         // Add what ever being timed here
 		gb_new = backtracking_stack(gb_new, path);
         double time = omp_get_wtime() - start;
+
+        bool found = gb_new.checkGameWin();
         if (DEBUG)
         {
         	cout<<"End State:"<<std::endl;
@@ -119,12 +121,12 @@ void run_backtracking()
 
 
         // Output results
-        cout << "amount: " << amount << " path_length: " << path.size() << " time: " << time << endl << endl;
+        cout << "amount: " << amount << " path_length: " << path.size() << " time: " << time << " Found: "<< found << endl << endl;
 
         // print file line
         ostringstream out;
         //cout<<"Printing"<<std::endl;
-        out << amount << "," << path.size() << "," << time << endl; 
+        out << amount << "," << path.size() << "," << time << found << endl; 
         write_results_to_file(results1_location, out.str());
     }
 
@@ -204,7 +206,7 @@ void run_recursive_backtracking()
 
         // Output results
         // "amount,number_denominations,time,found,end state"
-        cout << "amount: " << amount << " path_length: " << path.size() << " time: " << time << " Found: " << found << "End State: " << end_state << endl << endl;
+        cout << "amount: " << amount << " path_length: " << path.size() << " time: " << time << " Found: " << found << " End State: " << end_state << endl << endl;
 
         // print file line
         ostringstream out;
@@ -247,7 +249,7 @@ void process_args(int argc, char *argv[])
 
         if(contains_string(str, "-rb") || contains_string(str, "run_back") || contains_string(str, "runb"))
         {
-            run_backtracking();
+            run_stack_backtracking();
         }
 
         if(contains_string(str, "-recurse"))
