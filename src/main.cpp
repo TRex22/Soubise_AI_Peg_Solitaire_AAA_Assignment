@@ -38,9 +38,9 @@ Jason Chalom 711985
 
 /* Global variables */
 #define app_name "COMS3005 Assignment 2017"
-#define results1_header "amount,number_denominations,time,found"
+#define results1_header "amount,path length,time,found"
 #define results1_location "./results/results_exp1_stack.csv"
-#define results2_header "amount,number_denominations,time,found,end state"
+#define results2_header "amount,path length,time,found,end state"
 #define results2_location "./results/results_exp2_recurse.csv"
 GameBoard gb;
 bool DEBUG = 0;
