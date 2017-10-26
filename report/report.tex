@@ -116,6 +116,7 @@ Peg Solitaire is a board game which has a number of holes that can be filled wit
 \end{figure}
 
 \subsection{Stack Based Algorithm}
+The stack based algorithm we used is adapted from the recursive version.
 
 \section{Implementation}
 % Comment: Talk about OpenMP, Assumptions any special things ...
@@ -126,9 +127,58 @@ Peg Solitaire is a board game which has a number of holes that can be filled wit
 % what random generator
 % terminating conditions
 % etc...
+% French board
+% Average Number of Avilable Peg Moves = Cumulative Num of valid moves / Cumulative Number of Pegs (Across all states)
+
+\subsection{Technology Used}
+We made use of c++ 11, its standard libraries and OpenMP to time our results. Our results are saved as comma seperated value files which are then processed and graphed by libre office.
+
+\subsection{How To Compile and Run}
+In order to compile and run the code:\\
+% TODO proper styling
+Go to root folder of the project and run make.\\
+Then run ./bin/game.out to run the game.
+\\\\
+Commandline Parameters:\\
+usage: ./bin/game.out -rr -m\\
+Random state -rr\\
+Full state -rf\\
+Run Stacked Based Backtracking -rb\\
+Run Recursive Backtracking -recurse\\
+Manual -r\\
+Help -h\\\
+
+% have two tests one for recursive and one for stack
+% must show states
+
+\subsection{Our Termination Conditions}
+\subsubsection{Recursive Implementation}
+
+\subsubsection{Stack Implementation}
+
+
+\subsection{Problems We Encountered}
+% Very slow recurisve and very fast stack
+% Why - recursive due to it relying on heap ... slow internally
+% stack is much more efficient use of memory
+% We then checked results manually and with tests to ensure the correct choices were made - printed out states
+
+\subsection{Experimental Setup}
+% Describe how we test
+% Our loops 
+% recursive has 3 final states so its run 3 times because its finding 3 different win states
 
 
 \section{Theoretical Analysis}
+We assume that our basic opertion used for analysis in the backtracking algorithm for peg-solitaire is generating a new state which is playing a valid move or jumping a peg into a valid empty space (and removing a peg between them). Determining if there are no more moves, and also getting every valid move for a peg are both assumed to take constant time, which is the speed of each conditional by the number of board elements i.e. 49 elements.\\\
+
+\noindent The best case complexity of backtracking for peg-solitaire would be the case where only one path needs to be generated for any number of pegs i.e. no backtracks occur because a game win is found at the end of the first path. In this case the complexity is the number of pegs left on the board or the length of the found path. If we assume this number is represented by the variable n, then the best case complexity is $O(n)$.\\\
+
+% number of moves = 4
+% number of pegs
+% decreasing number of pegs
+
+\noindent In the worst case complexity event no game win is possible so every possible path has to be traversed by the algorithm. Each peg has the potential to move in four directions but that is unlikely. From our observations of the game being played out moves on a board from a start state tends to allow on average two possible moves per peg when moves are available. This means that on average (based on our observations) the game has a branching factor of 2. Since each path can be considered to be a branch on a tree data structure and the number of branches is the number of pegs which is assumed to be n. This means that the total search space (game-space) size is $2^n$ and so the worst case complexity is directly propotional to this number i.e. the worst case complexity is $O(2^n)$. 
 
 \section{Results}
 
@@ -136,6 +186,7 @@ Peg Solitaire is a board game which has a number of holes that can be filled wit
 
 
 \section{Conclusion}
+% Talk about comman non-unique states and using hashing and dynamic programming to improve perforamnce
 
 \section{Group Member Contribution}
 \begin{table}[H]
@@ -144,10 +195,10 @@ Peg Solitaire is a board game which has a number of holes that can be filled wit
 \begin{tabular}{|l|l|l|}
 \hline
 \textbf{Member}         & \textbf{Evan Bancroft 879192} & \textbf{Jason Chalom 711985} \\ \hline
-Game                    & \%                          & \%                         \\ \hline
-Back Tracking Algorithm & \%                          & \%                         \\ \hline
-Complexity Analysis     &                               &                              \\ \hline
-Report                  &                               &                              \\ \hline
+Game                    & 75\%                          & 25\%                         \\ \hline
+Back Tracking Algorithm & 50\%                          & 50\%                         \\ \hline
+% Complexity Analysis     & \%                          & \%                         \\ \hline
+Report                  & 25\%                          & 75\%                         \\ \hline
 \end{tabular}
 \caption{Contributions of Group Members By Task}
 \end{table}
