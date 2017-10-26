@@ -41,6 +41,8 @@ Jason Chalom 711985
 #define results1_location "./results/results_exp1_stack.csv"
 #define results2_header "amount,path length,time,found,end state"
 #define results2_location "./results/results_exp2_recurse.csv"
+#define results3_header "amount,time,end state"
+#define results3_location "./results/results_exp3_recurse.csv"
 GameBoard gb;
 bool DEBUG = 0;
 
@@ -80,29 +82,82 @@ int main(int argc, char *argv[])
 
 void test()
 {
+	int numValidMoves =0;
+   // int totalNumPegs =0;
 	cout<<"TESTS...."<<endl;
-    GameBoard gb_new;
-    gb_new.board[2][2]=1;
+    GameBoard gb_new=bestCase(17);
+    //gb_new.euroConfig_Start();
+    /*gb_new.board[2][2]=1;
     gb_new.board[3][2]=1;
     gb_new.board[4][3]=1;
     gb_new.board[5][4]=1;
-    gb_new.board[3][5]=1;
+    gb_new.board[3][5]=1;*/
     cout<<"Result: "<<endl;
     gb_new.printBoard();
 
     std::vector<std::vector<int>> path;
-    gb_new = backtracking_stack(gb_new, path);
-    if(gb_new.board[3][3]==1)
-    {
-        cout<<"YAY"<<std::endl;
-
-    }else{
-        cout<<":("<<std::endl;
-    }
+    gb_new = backtracking_stack(gb_new, path,numValidMoves);
+    bool found = gb_new.checkGameWin();
     gb_new.printBoard();
     int numPegs=gb_new.numPegs(); 
-    cout << "amount: " << numPegs << " path_length: " << path.size() << endl << endl; 
+    cout << "amount: " << numPegs << " path_length: " << path.size() << endl <<"Found: "<<found<< endl; 
     printPath(path);  
+}
+
+void runBestCase(int num)
+{
+	cout << "Running experiment 3...\n\n";
+	
+	//bc.printBoard();
+	//cout<<"Num: "<<bc.numPegs()<<endl;
+	int numValidMoves =0;
+    int totalNumPegs =0;
+    write_results_to_file(results3_location, results3_header, "");
+    
+    double total_start = omp_get_wtime();
+    
+    // increment number of experiments
+    for (int i = 1; i <= 36; i=i+1)
+    {
+    	totalNumPegs=totalNumPegs+i;
+        int amount = i;//redundant?
+        GameBoard bc=bestCase(amount);;
+        if (DEBUG)
+        {
+        	cout<<"Start State:"<<std::endl;
+        	bc.printBoard();
+        }
+        std::vector<std::vector<int>> path;
+        double start = omp_get_wtime();
+
+        // Add what ever being timed here
+		bc = backtracking_stack(bc, path,numValidMoves);
+        double time = omp_get_wtime() - start;
+
+        bool found = bc.checkGameWin();
+        if (DEBUG)
+        {
+        	cout<<"End State:"<<std::endl;
+        	bc.printBoard();
+        }
+
+
+
+		// Output results
+        cout << "amount: " << amount << " path_length: " << path.size() << " time: " << time << " Found: "<< found << endl;
+        cout<<"totalNumPegs: "<<totalNumPegs<<"\t numValidMoves: "<<numValidMoves<< endl<<endl;
+
+        // print file line
+        ostringstream out;
+        //cout<<"Printing"<<std::endl;
+        out << amount << "," << path.size() << "," << time << "," <<  found << endl; 
+        write_results_to_file(results3_location, out.str());
+    }
+
+}
+void run_BetterCase(int num)
+{
+
 }
 
 void printPath(vector<vector<int>> path)
@@ -116,13 +171,16 @@ void printPath(vector<vector<int>> path)
 void run_stack_backtracking()
 {
     cout << "Running experiment 1...\n\n";
+    int numValidMoves =0;
+    int totalNumPegs =0;
     write_results_to_file(results1_location, results1_header, "");
     
     double total_start = omp_get_wtime();
     
     // increment number of experiments
-    for (int i = 1; i <= 37; i=i+1)
+    for (int i = 1; i <= 36; i=i+1)
     {
+    	totalNumPegs=totalNumPegs+i;
         int amount = i;//redundant?
         GameBoard gb_new(amount);
         if (DEBUG)
@@ -135,7 +193,7 @@ void run_stack_backtracking()
         double start = omp_get_wtime();
 
         // Add what ever being timed here
-		gb_new = backtracking_stack(gb_new, path);
+		gb_new = backtracking_stack(gb_new, path,numValidMoves);
         double time = omp_get_wtime() - start;
 
         bool found = gb_new.checkGameWin();
@@ -148,7 +206,8 @@ void run_stack_backtracking()
 
 
         // Output results
-        cout << "amount: " << amount << " path_length: " << path.size() << " time: " << time << " Found: "<< found << endl << endl;
+        cout << "amount: " << amount << " path_length: " << path.size() << " time: " << time << " Found: "<< found << endl;
+        cout<<"totalNumPegs: "<<totalNumPegs<<"\t numValidMoves: "<<numValidMoves<< endl<<endl;
 
         // print file line
         ostringstream out;
@@ -277,6 +336,10 @@ void process_args(int argc, char *argv[])
         if(contains_string(str, "-rb") || contains_string(str, "run_back") || contains_string(str, "runb"))
         {
             run_stack_backtracking();
+        }
+        if(contains_string(str, "-bc"))
+        {
+            runBestCase(24);
         }
 
         if(contains_string(str, "-recurse"))

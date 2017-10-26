@@ -1,5 +1,6 @@
-GameBoard backtracking_stack(GameBoard start, vector<vector<int>> &outPath)
+GameBoard backtracking_stack(GameBoard start, vector<vector<int>> &outPath,int &numValidMoves)
 {
+
 	bool DEBUG = 0;
 	bool found = false;
 	bool foundValid =false;
@@ -30,6 +31,7 @@ GameBoard backtracking_stack(GameBoard start, vector<vector<int>> &outPath)
 
 		if (foundValid==true)
 		{
+			//cout<<"resetting path"<<endl;
 			path=prevPath;
 			current.copy(prev);
 			outPath=preOutPath;
@@ -37,21 +39,24 @@ GameBoard backtracking_stack(GameBoard start, vector<vector<int>> &outPath)
 			
 		}else if(current.checkGameEnd()==true)
 		{
+			//cout<<"Breaking"<<endl;
 			break;
 		}
-
-		while(!current.checkGameEnd())// do the path till fail
+		while(!current.checkGameEnd() || numPegs==1)// do the path till fail
 		{
+
 			numPegs = current.numPegs();
+			//cout<<"Breaking with: "<<path.size()<<endl;
 			if (path.size()==0)
 			{
+				//cout<<"Breaking2"<<endl;
 				break;
 			}
 			Move mov = path.back();
 			path.pop_back();
 
 			//----------------
-			if (DEBUG)
+			if (0)
 			{
 				cout<<"TEST in BackTrack:"<<endl;
 				current.printBoard();
@@ -63,11 +68,16 @@ GameBoard backtracking_stack(GameBoard start, vector<vector<int>> &outPath)
 
 			if(current.checkIfMoveValid(mov.id, mov.r, mov.c))
 			{
-				
-				foundValid=true;
-				prevPath=path;
-				prev.copy(current);
-				preOutPath=outPath;
+				//if(foundValid==false)
+				//{
+					//cout<<"setting temp path"<<endl;
+					foundValid=true; // makes the temp at that point
+					prevPath=path;
+					//prevPath = current.getMoves(prevPath);
+					prev.copy(current);
+					preOutPath=outPath;
+				//}
+				numValidMoves++;
 
 				if(DEBUG)
 				{
@@ -95,10 +105,11 @@ GameBoard backtracking_stack(GameBoard start, vector<vector<int>> &outPath)
 					}
 				}
 				//--------------
+				numPegs = current.numPegs();
 			}
 
 			//--------------
-			if(DEBUG)
+			if(0)
 			{
 				cout<<"After move:"<<std::endl;
 				current.printBoard();
@@ -109,6 +120,7 @@ GameBoard backtracking_stack(GameBoard start, vector<vector<int>> &outPath)
 		int numPegs = current.numPegs();
 			if (numPegs==1 || path.size() ==0)//failed 1 peg
 			{
+				//current.printBoard();
 				if (current.checkGameWin())
 				{
 					found =true;
@@ -160,4 +172,101 @@ bool backtracking_recursive(GameBoard start, GameBoard final, vector<Move> path)
 		}
 		return false;
 	}
+}
+GameBoard bestCase(int numPegs)
+{
+	GameBoard bc;
+	bc.board[0][2] =1;
+	//bc.printBoard();
+	int curR=0;
+	int curC=2;
+
+	for (int i = 1; i < numPegs; ++i)// for each new peg
+	{
+		int j=0;
+		bool found = false;
+		while(j<4 && found ==false)// try reverse up, right, down, left
+		{
+			//cout<<"R: "<<curR<<"\t C: "<<curC<<"\t J: "<<j<<endl;
+			switch(j)
+			{
+				case 0: {//reverseUp
+							if (curR<5)
+							{
+								curR=curR+2;
+								if(bc.checkIfMoveValidReverse(j,curR,curC))
+								{
+									bc.makeReverseMove(j,curR,curC);
+									found = true;
+									//cout<<"MOVED up"<<endl;
+								}else
+								{
+									curR=curR-2;
+								}
+							}
+							break;
+						}
+				case 1: {//reverseright
+							if (curC>1)
+							{
+								curC=curC-2;
+								if(bc.checkIfMoveValidReverse(j,curR,curC))
+								{
+									bc.makeReverseMove(j,curR,curC);
+									found = true;
+									//cout<<"MOVED right"<<endl;
+								}else
+								{
+									curC=curC+2;
+								}
+							}
+							break;
+						}
+				case 2: {//reversedown
+							if (curR>1)
+							{
+								curR=curR-2;
+								if(bc.checkIfMoveValidReverse(j,curR,curC))
+								{
+									bc.makeReverseMove(j,curR,curC);
+									found = true;
+									//cout<<"MOVED down"<<endl;
+								}else
+								{
+									curR=curR+2;
+								}
+							}
+							break;							
+						}
+				case 3: {//reverseleft
+							if (curC<5)
+							{
+								curC=curC+2;
+								if(bc.checkIfMoveValidReverse(j,curR,curC))
+								{
+									bc.makeReverseMove(j,curR,curC);
+									found = true;
+									//cout<<"MOVED left"<<endl;
+								}else
+								{
+									curC=curC -2;
+								}
+							}
+							break;
+						}
+				default:{	
+							std::cout<<"Invalid direcion \n";
+							return false;
+							break;
+						}
+			}
+			j++;
+		}
+	}
+	return(bc);
+}
+GameBoard betterCase(int)
+{
+	vector<Move> path;
+	Move current(1,0,2);
 }

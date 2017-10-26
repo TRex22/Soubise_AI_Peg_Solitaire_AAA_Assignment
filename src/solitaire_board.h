@@ -49,6 +49,7 @@ class GameBoard
 		void euroConfig_Random();
 		bool makeMove(int id, int r, int c);
 		bool checkIfMoveValid(int id,int r,int c);
+		bool checkIfMoveValidReverse(int id, int r,int c);
 
 		void copy(GameBoard gb);
 		bool equals(GameBoard gb);
@@ -368,6 +369,67 @@ bool GameBoard::checkIfMoveValid(int id, int r,int c)//Given a direction and a p
 				}
 		case 3: {//left
 					if((c>1)&&(board[r][c-2]==0)&&(board[r][c-1]==1)&&(board[r][c]==1))
+					{
+						return true;
+						break;
+					}else
+					{
+						//cout <<"Invalid move \n";
+						return false;
+						break;
+					}
+				}
+		default:{	
+					std::cout<<"Invalid ID \n";
+					return false;
+					break;
+				}
+	}
+}
+
+bool GameBoard::checkIfMoveValidReverse(int id, int r,int c)//Given a direction and a pair of coodinates
+													 // will check if that reverse move would be valid
+{
+	switch(id)
+	{	
+		case 0: {	//up
+					if ((r>1)&&(board[r-2][c]==1)&&(board[r-1][c]==0)&&(board[r][c]==0)) // last check might be redundant but be safe
+					{
+						return true;
+						break;
+					}else
+					{
+						//cout <<"Invalid move \n";
+						return false;
+						break;
+					}
+				}
+		case 1: {//right
+					if((c<5)&&(board[r][c+2]==1)&&(board[r][c+1]==0)&&(board[r][c]==0))
+					{
+						return true;
+						break;
+					}else
+					{
+						//cout <<"Invalid move \n";
+						return false;
+						break;
+					}
+				}
+		case 2: {//down
+					if((r<5)&&(board[r+2][c]==1)&&(board[r+1][c]==0)&&(board[r][c]==0))
+					{
+						return true;
+						break;
+					}else
+					{
+						//cout <<"Invalid move \n";
+						return false;
+						break;
+					}
+				}
+		case 3: {//left
+					if((c>1)&&(board[r][c-2]==1)&&(board[r][c-1]==0)&&(board[r][c]==0))
 					{
 						return true;
 						break;
