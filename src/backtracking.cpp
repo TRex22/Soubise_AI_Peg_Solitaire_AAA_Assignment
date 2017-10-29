@@ -14,122 +14,135 @@ GameBoard backtracking_stack(GameBoard start, vector<vector<int>> &outPath,int &
 	current.copy(start);
 	vector<vector<int>> preOutPath;
 
+	std::vector<std::vector<Move>> stackVector;
+	std::vector<GameBoard> boardVector;
+	stackVector.push_back(path);
+	boardVector.push_back(current);
+
 	int numPegs = current.numPegs();
 	int i=1;
-	while(found==0  &&	i<=numPegs)
-	{
-		endState.copy(current);
-		counter++;
 
-		//--------------
-		if (DEBUG)
+
+		while(found==0  &&	i<=numPegs && stackVector.size()>0)
 		{
-			cout<<"TEST IN FIRST WHILE "<<'\t'<<foundValid<<'\t'<<counter<<std::endl;
+			endState.copy(current);
+			counter++;
+
+			//--------------
+			if (DEBUG)
+			{
+				cout<<"TEST IN FIRST WHILE "<<'\t'<<foundValid<<'\t'<<counter<<std::endl;
+				current.printBoard();
+			}
+			//--------------
+			cout<<"TEST before reset "<<endl;
+			//boardVector.back().printBoard();
+
+			path =stackVector.back();
+			stackVector.pop_back();
+			current.copy(boardVector.back());
+			boardVector.pop_back();
 			current.printBoard();
-		}
-		//--------------
-
-		if (foundValid==true)
-		{
-			//cout<<"resetting path"<<endl;
-			path=prevPath;
-			current.copy(prev);
-			outPath=preOutPath;
-			foundValid=false;
+			cout<<"back tracked path \t V:"<<stackVector.size()<<"\tP:"<<path.size()<<endl;
+			//current.printBoard();
+			outPath=preOutPath;				
 			
-		}else if(current.checkGameEnd()==true)
-		{
-			//cout<<"Breaking"<<endl;
-			break;
-		}
-		while(!current.checkGameEnd() || numPegs==1)// do the path till fail
-		{
+				//cout<<"Breaking"<<endl;
 
-			numPegs = current.numPegs();
-			//cout<<"Breaking with: "<<path.size()<<endl;
-			if (path.size()==0)
+			while(!current.checkGameEnd() && numPegs>=1)// do the path till fail
 			{
-				//cout<<"Breaking2"<<endl;
-				break;
-			}
-			Move mov = path.back();
-			path.pop_back();
 
-			//----------------
-			if (0)
-			{
-				cout<<"TEST in BackTrack:"<<endl;
-				current.printBoard();
-				std::cout<<"id: "<<mov.id<<" r: "<<mov.r<<" c: "<<mov.c<<std::endl;
-				std::cout<<"Check: "<<current.checkIfMoveValid(mov.id, mov.r, mov.c)<<std::endl;
-				std::cout<<"Path Size: "<<path.size()<<std::endl;
-			}
-			//----------------
-
-			if(current.checkIfMoveValid(mov.id, mov.r, mov.c))
-			{
-				//if(foundValid==false)
-				//{
-					//cout<<"setting temp path"<<endl;
-					foundValid=true; // makes the temp at that point
-					prevPath=path;
-					//prevPath = current.getMoves(prevPath);
-					prev.copy(current);
-					preOutPath=outPath;
-				//}
-				numValidMoves++;
-
-				if(DEBUG)
-				{
-					cout<<"Found valid move at"<<mov.id<<" r: "<<mov.r<<" c: "<<mov.c<<std::endl;
-					for (int i = 0; i < (int) prevPath.size(); ++i)
-					{
-						cout<<"PrevPath: \t"<<i<<" ("<<prevPath[i].r<<","<<prevPath[i].c<<")"<<'\t'<<prevPath[i].id<<std::endl;
-					}
-				}
-				current.makeMove(mov.id, mov.r, mov.c);
-				std::vector<int> coord;
-				coord.push_back(mov.r);
-				coord.push_back(mov.c);
-				coord.push_back(mov.id);
-				outPath.push_back(coord);
-
-				path = current.getMoves(path);
-
-				//---------------
-				if(DEBUG)
-				{
-					for (int i = 0; i < (int)path.size(); ++i)
-					{
-						cout<<"P: \t"<<i<<" ("<<path[i].r<<","<<path[i].c<<")"<<'\t'<<path[i].id <<std::endl;
-					}
-				}
-				//--------------
 				numPegs = current.numPegs();
-			}
-
-			//--------------
-			if(0)
-			{
-				cout<<"After move:"<<std::endl;
-				current.printBoard();
-			}
-			//--------------
-					
-		}	
-		int numPegs = current.numPegs();
-			if (numPegs==1 || path.size() ==0)//failed 1 peg
-			{
-				//current.printBoard();
-				if (current.checkGameWin())
+				//cout<<"Breaking with: "<<path.size()<<endl;
+				if (path.size()==0)
 				{
-					found =true;
-				}else
-				{
+					cout<<"Breaking2"<<endl;
 					break;
 				}
+				Move mov = path.back();
+				path.pop_back();
+
+				//----------------
+				if (0)
+				{
+					cout<<"TEST in BackTrack:"<<endl;
+					current.printBoard();
+					std::cout<<"id: "<<mov.id<<" r: "<<mov.r<<" c: "<<mov.c<<std::endl;
+					std::cout<<"Check: "<<current.checkIfMoveValid(mov.id, mov.r, mov.c)<<std::endl;
+					std::cout<<"Path Size: "<<path.size()<<std::endl;
+				}
+				//----------------
+
+				if(current.checkIfMoveValid(mov.id, mov.r, mov.c))
+				{
+					foundValid=true; // makes the temp at that point
+					//prevPath=path;
+					stackVector.push_back(path);
+					//prev.copy(current);
+					boardVector.push_back(current);
+					//cout<<"Adding a new path \t N:"<<stackVector.size()<<"\tP:"<<path.size()<<endl;
+					//current.printBoard();
+					//cout<<"Pushing state to stack"<<endl;
+
+					preOutPath=outPath;
+					numValidMoves++;
+
+					if(DEBUG)
+					{
+						cout<<"Found valid move at"<<mov.id<<" r: "<<mov.r<<" c: "<<mov.c<<std::endl;
+						for (int i = 0; i < (int) prevPath.size(); ++i)
+						{
+							cout<<"PrevPath: \t"<<i<<" ("<<prevPath[i].r<<","<<prevPath[i].c<<")"<<'\t'<<prevPath[i].id<<std::endl;
+						}
+					}
+					current.makeMove(mov.id, mov.r, mov.c);
+					std::vector<int> coord;
+					coord.push_back(mov.r);
+					coord.push_back(mov.c);
+					coord.push_back(mov.id);
+					outPath.push_back(coord);
+
+					path = current.getMoves(path);
+
+					//---------------
+					if(DEBUG)
+					{
+						for (int i = 0; i < (int)path.size(); ++i)
+						{
+							cout<<"P (new): \t"<<i<<" ("<<path[i].r<<","<<path[i].c<<")"<<'\t'<<path[i].id <<std::endl;
+						}
+					}
+					//--------------
+					numPegs = current.numPegs();
+				}
+
+				//--------------
+				if(0)
+				{
+					cout<<"After move:"<<std::endl;
+					current.printBoard();
+				}
+				//--------------
+						
+			}// until stack fails
+			int numPegs = current.numPegs();
+			if (numPegs==1)
+			{
+				if(current.checkGameWin())
+				{
+					found =1;
+					break;
+				}else
+				{
+					cout<<"Found alternative soln"<<endl;
+					break;
+				}
+			}else if(path.size()==0)
+			{
+				break;
 			}
-	}
+			
+		}
 
 	return current;
 }

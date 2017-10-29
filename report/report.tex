@@ -86,10 +86,10 @@
 
 
 \section{Introduction}
-The purpose of the assignment is to implement and analyse a version of the Peg Solitaire game and the backtracking algorithm (to play the game).
+The purpose of the assignment is to implement and analyse a version of the Peg Solitaire game and the backtracking algorithm (to play the game to completion and return a valid path).
 
 \section{Background}
-Peg Solitaire is a board game which has a number of holes that can be filled with pegs. We have chosen to use the European style of board which has extra positions on the board \ref{board}. In this style most of a grid has peg holes excluding three per corner. The aim of the game is to remove pegs until only one peg remains. This is the position one row directly above the central peg, a row above that and the left most peg in the top row. Moves are made when pegs jump over a peg and are placed in an open position. Then peg which is jumped over is then removed. This move can happen in both horizontal and vertical directions. In the European variant, the game has three possible optimal terminal states. Its is possible to hit sub-optimal states where there are more pegs left on the board but no possible moves left \cite{harder}. 
+Peg Solitaire is a board game which has a number of holes that can be filled with pegs. We have chosen to use the European/French style of board which has four extra positions for pegs on the board \ref{board}. In this style most of a grid has peg holes excluding three per corner. The aim of the game is to remove pegs until only one peg remains. This is the position one row directly above the central peg, a row above that and the left most peg in the top row. Moves are made when pegs jump over a peg and are placed in an open position. Then a peg which has been jumped over, is then removed. This move can happen in both horizontal and vertical directions. In the European variant, the game has three possible optimal terminal states. Its is possible to hit sub-optimal states where there are more pegs left on the board but no possible moves left \cite{harder}. 
 
 % Have example moves and suboptimal states?
 \begin{figure}[H]
@@ -116,7 +116,7 @@ Peg Solitaire is a board game which has a number of holes that can be filled wit
 \end{figure}
 
 \subsection{Stack Based Algorithm}
-The stack based algorithm we used is adapted from the recursive version.
+The stack based algorithm we used is adapted from the recursive version. The purpose of implementing the stack based algorithm was to compare it's effciency to that of the recursive based algorithm.
 
 \section{Implementation}
 % Comment: Talk about OpenMP, Assumptions any special things ...
@@ -131,7 +131,9 @@ The stack based algorithm we used is adapted from the recursive version.
 % Average Number of Avilable Peg Moves = Cumulative Num of valid moves / Cumulative Number of Pegs (Across all states)
 
 \subsection{Technology Used}
-We made use of c++ 11, its standard libraries and OpenMP to time our results. Our results are saved as comma seperated value files which are then processed and graphed by libre office.
+We made use of c++ 11, its standard libraries and OpenMP to time our results. Our results are saved as comma seperated value files which are then processed and graphed by libre office.\\
+To create the stacks in the stack implemntation we used vectors.\\
+
 
 \subsection{How To Compile and Run}
 In order to compile and run the code:\\
@@ -140,28 +142,37 @@ Go to root folder of the project and run make.\\
 Then run ./bin/game.out to run the game.
 \\\\
 Commandline Parameters:\\
-usage: ./bin/game.out -rr -m\\
-Random state -rr\\
-Full state -rf\\
-Run Stacked Based Backtracking -rb\\
-Run Recursive Backtracking -recurse\\
-Manual -r\\
-Help -h\\\
+Usage Example: ./bin/game.out -rb\\
+Random state: ./bin/game.out -rr\\
+Full state: ./bin/game.out -rf\\
+Run Stacked Based Backtracking: -rb\\
+Run Recursive Backtracking: -recurse\\
+Manual: -m\\
+Help: -h\\\
 
 % have two tests one for recursive and one for stack
 % must show states
 
 \subsection{Our Termination Conditions}
+Although both algorithms terminate under similar conditions (no more moves possible or it has reached a "win" state), due to their implementation, the proccess of reaching these states are very diffrent. Because of this, these proccesses need to be described further.\\\
 \subsubsection{Recursive Implementation}
 
 \subsubsection{Stack Implementation}
-
-
+The basic premise of this implementation is that: A stack ( called stack A in this explanation) of all possible moves, of all valid pegs are pushed onto the stack.\\
+An example of this would be the following:\\
+If there is a valid peg at position (x,y) on the board, the algorithm will generate four possible moves (up, down, left and right), and push these 4 possible moves onto the stack.\\
+Once all the possible moves for each valid peg on the board is pushed onto the stack, the algorithm will pop a move off the stack, check if it's a valid move, and if it isn't a valid move; ignore it and pop off the next possible move. This will continue until it pops off a valid move.\\
+Now the remaining stack (sans that valid move that was just popped off) will be copied into a tempory stack (Call it stack B).\\
+The valid move will then be performed, eliminating a peg, and as such removing it's 4 possible moves from stack A, if these moves weren't eliminated from stack A earlier.\\
+The algorithm will then repeat  the proccesess of popping off invalid moves from stack A.\\
+If we reach the end of stack A and there were no more valid moves, then it has reached an end to a branch and needs to backtrack. It acheives this by simply setting stack A to stack B (i.e. all the remaining moves if that initial move didnt happen.) and reverses the move.\\
+If however, the algorithm does find a valid move again, the A stack (sans the valid move) will be copied into a new temporay stack. More and more substacks will be created util no valid moves are found in the substack. When a substack failes it will backtrack to the previous stack, and the proccess continues until a "win" state has been found or all possible paths have been explored and nothing was found.\\\
 \subsection{Problems We Encountered}
-% Very slow recurisve and very fast stack
 % Why - recursive due to it relying on heap ... slow internally
 % stack is much more efficient use of memory
 % We then checked results manually and with tests to ensure the correct choices were made - printed out states
+One of the most notable feature/Problem we encountered was that the stack implemntation was incrediably fast relative to the recursive implemntation. Both returned the correct output but because of the recursive implemntation relying on a heap, we only managed to get 17 data points in 30 hours of the program running. The stack implemntation doesn't use the heap, which is internally slow, so therefore allowing the stack implemntation to far surpass the recursive.\\
+The vector stack in c++ also is a much more effcient use of memory compared to objects.\\\
 
 \subsection{Experimental Setup}
 % Describe how we test

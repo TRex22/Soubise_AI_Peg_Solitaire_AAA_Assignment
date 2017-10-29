@@ -85,13 +85,13 @@ void test()
 	int numValidMoves =0;
    // int totalNumPegs =0;
 	cout<<"TESTS...."<<endl;
-    GameBoard gb_new=bestCase(17);
+    GameBoard gb_new;
     //gb_new.euroConfig_Start();
-    /*gb_new.board[2][2]=1;
+    gb_new.board[2][2]=1;
     gb_new.board[3][2]=1;
     gb_new.board[4][3]=1;
     gb_new.board[5][4]=1;
-    gb_new.board[3][5]=1;*/
+    gb_new.board[3][5]=1;
     cout<<"Result: "<<endl;
     gb_new.printBoard();
 
