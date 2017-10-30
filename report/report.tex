@@ -14,6 +14,9 @@
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 \usepackage{float}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{listings}
 
 \graphicspath{ {images/} }
 
@@ -104,19 +107,84 @@ Peg Solitaire is a board game which has a number of holes that can be filled wit
 			}
 \end{figure}
 
-
 % cite the wayback machine??
 \noindent The backtracking algorithm is similar to a brute force approach to finding solutions to problems but is more systematic. It attempts to follow a logical series of decisions in solving these problems and when a block state occurs the algorithm will backtrack to previous decisions and choose different paths until a terminal (complete) state is reached. The full set of solutions to a problem can be found by continuing to run the algorithm until all paths have been searched but that is not always necessary.
 
-\subsection{Recursive Algorithm}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=.50\textwidth,scale=.50]{images/recursive_algorithm}
-	\caption{Recursive Algorithm \cite{lab5}}
-\end{figure}
+\begin{algorithm}[H]
+	\begin{algorithmic}[1]
+		\Procedure{FindSolution}{\texttt{start, final, path}}
+			\If {\texttt{start.numPegs <= final.numPegs}}
+				\State \Return (start = final)
+			\Else 
+				\For{\texttt{each jump $J \in$ [0,n) x [0,m) x \{NORTH,EAST,SOUTH,WEST\}}}
+			        \If {$J$ is a legal jump for start}
+			        	\State \texttt{start.makeMove($J$)}
+			        	\State \texttt{path.push($J$)}
+			        	\State \texttt{found = FindSolution(start, final, path)}
+
+			        	\If {found}
+			        		\State \Return {TRUE}
+			        	\Else
+			        		\State \texttt{start.makeReverseMove($J$)}
+			        		\State \texttt{path.pop()}
+			        	\EndIf
+					\EndIf
+		      	\EndFor
+		      	\State \Return{FALSE}
+			\EndIf 
+		\EndProcedure
+	\end{algorithmic}
+	\caption{Recursive Algorithm (From References \cite{lab5})}\label{euclid}
+\end{algorithm}
+
 
 \subsection{Stack Based Algorithm}
-The stack based algorithm we used is adapted from the recursive version. The purpose of implementing the stack based algorithm was to compare it's effciency to that of the recursive based algorithm.
+The stack based algorithm we used is adapted from the recursive version. The purpose of implementing the stack based algorithm was to compare it's effciency to that of the recursive based algorithm. Also the recursive algorithm was expected to be much slower.
+
+\begin{algorithm}[H]
+	\begin{algorithmic}[1]
+		\Procedure{FindSolution}{\texttt{start, outPath, totalNumPegs, numValidMoves}}
+			\State currentState $\leftarrow$ start
+			\State path $\leftarrow$ start.getMoves()
+			\State numPegs $\leftarrow$ currentState.getNumPegs()
+			\State found $\leftarrow$ FALSE
+			\State i $\leftarrow$ 1
+
+			\State stackVector.push(path)
+			\State boardVector.push(currentState)
+
+			\While {found is FALSE and i <= numPegs and stackVector.size() > 0 and path.size() > 0}
+				\State path $\leftarrow$ stackVector.pop()
+				\State currentState $\leftarrow$ boardVector.pop()
+
+				\While {\texttt{currentState.checkGameEnd() != FALSE}}
+					\State numPegs $\leftarrow$ currentState.getNumPegs()
+					\State move $\leftarrow$ path.pop()
+
+					\If {\texttt{currentState.checkIfMoveValid(move) == TRUE}}
+						\State stackVector.push(path)
+						\State boardVector.push(currentState)
+						\State numValidMoves = numValidMoves + 1
+						\State currentState.makeMove(move)
+						\State outPath.push(move)
+						\State path $\leftarrow$ currentState.getMoves()
+						\State numPegs $\leftarrow$ currentState.getNumPegs()
+					\EndIf
+				\EndWhile
+				\State numPegs $\leftarrow$ currentState.getNumPegs()
+				\If {numPegs == 1}
+					\If {currentState.checkGameWin() == TRUE}
+						\State found = TRUE
+					\Else
+						\State found = FALSE
+					\EndIf
+				\EndIf
+			\EndWhile
+			\Return currentState
+		\EndProcedure
+	\end{algorithmic}
+	\caption{Stack Based Algorithm (Adapted From References \cite{lab5})}\label{euclid}
+\end{algorithm}
 
 \section{Implementation}
 % Comment: Talk about OpenMP, Assumptions any special things ...
@@ -141,20 +209,22 @@ In order to compile and run the code:\\
 Go to root folder of the project and run make.\\
 Then run ./bin/game.out to run the game.
 \\\\
-Commandline Parameters:\\
-Usage Example: ./bin/game.out -rb\\
-Random state: ./bin/game.out -rr\\
-Full state: ./bin/game.out -rf\\
-Run Stacked Based Backtracking: -rb\\
-Run Recursive Backtracking: -recurse\\
-Manual: -m\\
-Help: -h\\\
-
+\noindent Commandline Parameters:
+\begin{lstlisting}
+	
+	Usage Example: ./bin/game.out -rb
+	Random state: ./bin/game.out -rr
+	Full state: ./bin/game.out -rf
+	Run Stacked Based Backtracking: -rb
+	Run Recursive Backtracking: -recurse
+	Manual: -m
+	Help: -h
+\end{lstlisting}
 % have two tests one for recursive and one for stack
 % must show states
 
 \subsection{Our Termination Conditions}
-Although both algorithms terminate under similar conditions (no more moves possible or it has reached a "win" state), due to their implementation, the proccess of reaching these states are very diffrent. Because of this, these proccesses need to be described further.\\\
+Although both algorithms terminate under similar conditions (no more moves possible or it has reached a \"win\" state), due to their implementation, the proccess of reaching these states are very diffrent. Because of this, these proccesses need to be described further.\\\
 \subsubsection{Recursive Implementation}
 
 \subsubsection{Stack Implementation}
