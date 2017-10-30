@@ -50,13 +50,6 @@ int main(int argc, char *argv[])
 
 
     /*Board testing*/
-    if (DEBUG)
-    {
-
-        //gb.printBoard();
-    }
-
-
     if (argc == 1)
     {
         print_usage(argv);
@@ -70,7 +63,6 @@ void test()
 {
     int numValidMoves = 0;
     int totalNumPegs = 0;
-    // int totalNumPegs =0;
     cout << "TESTS...." << endl;
     GameBoard gb_new;
     //gb_new.euroConfig_Start();
@@ -95,8 +87,6 @@ void runBestCase(int num)
 {
     cout << "Running experiment 3...\n\n";
 
-    //bc.printBoard();
-    //cout<<"Num: "<<bc.numPegs()<<endl;
     int numValidMoves = 0;
     int totalNumPegs = 0;
     write_results_to_file(results3_location, results3_header, "");
@@ -145,10 +135,6 @@ void runBestCase(int num)
         out << amount << "," << path.size() << "," << time << "," <<  found << endl;
         write_results_to_file(results3_location, out.str());
     }
-
-}
-void run_BetterCase(int num)
-{
 
 }
 

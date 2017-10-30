@@ -150,23 +150,12 @@ GameBoard::GameBoard(int num_pegs)//default empty board populated with num_pegs 
 	{
 		int rnd_row = row_distribution(mt);
 		int rnd_col = col_distribution(mt2);
-		//cout<<"I:"<<i<<std::endl<<"Row:"<<rnd_row<<std::endl<<"Col:"<<rnd_col<<std::endl;
-		while (true)
+		while (!board[rnd_row][rnd_col] == 0)
 		{
-			if (board[rnd_row][rnd_col] == 0)
-			{
-				//cout<<"In if"<<std::endl;
-				break;
-			} else
-			{
-				//cout<<"In else"<<std::endl;
-				rnd_row = row_distribution(mt);
-				rnd_col = col_distribution(mt2);
-				//cout<<"New Row:"<<rnd_row<<std::endl<<"New Col:"<<rnd_col<<std::endl;
-			}
+			rnd_row = row_distribution(mt);
+			rnd_col = col_distribution(mt2);
 		}
 		board[rnd_row][rnd_col] = 1;
-		//cout<<"Added at Row:"<<rnd_row<<" Col:"<<rnd_col<<std::endl;
 	}
 }
 
@@ -289,7 +278,6 @@ bool GameBoard::makeMove(int id, int r, int c) //Will make the move. MUST RUN ch
 		board[r][c] = 0;
 		board[r - 1][c] = 0;
 		board[r - 2][c] = 1;
-		//cout<<"Made move"<<std::endl;
 		return true;
 		break;
 	}
@@ -297,7 +285,6 @@ bool GameBoard::makeMove(int id, int r, int c) //Will make the move. MUST RUN ch
 		board[r][c] = 0;
 		board[r][c + 1] = 0;
 		board[r][c + 2] = 1;
-		//cout<<"Made move"<<std::endl;
 		return true;
 		break;
 	}
@@ -305,7 +292,6 @@ bool GameBoard::makeMove(int id, int r, int c) //Will make the move. MUST RUN ch
 		board[r][c] = 0;
 		board[r + 1][c] = 0;
 		board[r + 2][c] = 1;
-		//cout<<"Made move"<<std::endl;
 		return true;
 		break;
 	}
@@ -313,7 +299,6 @@ bool GameBoard::makeMove(int id, int r, int c) //Will make the move. MUST RUN ch
 		board[r][c] = 0;
 		board[r][c - 1] = 0;
 		board[r][c - 2] = 1;
-		//cout<<"Made move"<<std::endl;
 		return true;
 		break;
 	}
@@ -338,7 +323,6 @@ bool GameBoard::checkIfMoveValid(int id, int r, int c) //Given a direction and a
 			break;
 		} else
 		{
-			//cout <<"Invalid move \n";
 			return false;
 			break;
 		}
@@ -350,7 +334,6 @@ bool GameBoard::checkIfMoveValid(int id, int r, int c) //Given a direction and a
 			break;
 		} else
 		{
-			//cout <<"Invalid move \n";
 			return false;
 			break;
 		}
@@ -362,7 +345,6 @@ bool GameBoard::checkIfMoveValid(int id, int r, int c) //Given a direction and a
 			break;
 		} else
 		{
-			//cout <<"Invalid move \n";
 			return false;
 			break;
 		}
@@ -374,7 +356,6 @@ bool GameBoard::checkIfMoveValid(int id, int r, int c) //Given a direction and a
 			break;
 		} else
 		{
-			//cout <<"Invalid move \n";
 			return false;
 			break;
 		}
@@ -399,7 +380,6 @@ bool GameBoard::checkIfMoveValidReverse(int id, int r, int c) //Given a directio
 			break;
 		} else
 		{
-			//cout <<"Invalid move \n";
 			return false;
 			break;
 		}
@@ -411,7 +391,6 @@ bool GameBoard::checkIfMoveValidReverse(int id, int r, int c) //Given a directio
 			break;
 		} else
 		{
-			//cout <<"Invalid move \n";
 			return false;
 			break;
 		}
@@ -423,7 +402,6 @@ bool GameBoard::checkIfMoveValidReverse(int id, int r, int c) //Given a directio
 			break;
 		} else
 		{
-			//cout <<"Invalid move \n";
 			return false;
 			break;
 		}
@@ -435,7 +413,6 @@ bool GameBoard::checkIfMoveValidReverse(int id, int r, int c) //Given a directio
 			break;
 		} else
 		{
-			//cout <<"Invalid move \n";
 			return false;
 			break;
 		}
@@ -555,7 +532,6 @@ bool GameBoard::makeReverseMove(int id, int r, int c)
 		board[r][c] = 1;
 		board[r - 1][c] = 1;
 		board[r - 2][c] = 0;
-		//cout<<"Made move"<<std::endl;
 		return true;
 		break;
 	}
@@ -563,7 +539,6 @@ bool GameBoard::makeReverseMove(int id, int r, int c)
 		board[r][c] = 1;
 		board[r][c + 1] = 1;
 		board[r][c + 2] = 0;
-		//cout<<"Made move"<<std::endl;
 		return true;
 		break;
 	}
@@ -571,7 +546,6 @@ bool GameBoard::makeReverseMove(int id, int r, int c)
 		board[r][c] = 1;
 		board[r + 1][c] = 1;
 		board[r + 2][c] = 0;
-		//cout<<"Made move"<<std::endl;
 		return true;
 		break;
 	}
@@ -579,7 +553,6 @@ bool GameBoard::makeReverseMove(int id, int r, int c)
 		board[r][c] = 1;
 		board[r][c - 1] = 1;
 		board[r][c - 2] = 0;
-		//cout<<"Made move"<<std::endl;
 		return true;
 		break;
 	}

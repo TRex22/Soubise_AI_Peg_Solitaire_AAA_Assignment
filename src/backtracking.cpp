@@ -28,7 +28,7 @@ GameBoard backtracking_stack(GameBoard start, vector<vector<int>> &outPath, int 
 		while (!current.checkGameEnd() && numPegs >= 1 && path.size() > 0) // do the path till no path left
 		{
 			numPegs = current.numPegs();
-			totalNumPegs += numPegs;
+			totalNumPegs += 1;
 
 			Move mov = path.back();
 			path.pop_back();
@@ -53,17 +53,14 @@ GameBoard backtracking_stack(GameBoard start, vector<vector<int>> &outPath, int 
 		}
 
 		numPegs = current.numPegs();
-		if (numPegs == 1) //do we need this?
+		if (current.checkGameWin())
 		{
-			if (current.checkGameWin())
-			{
-				found = 1;
-				// break;
-			} else
-			{
-				found = 0;
-				// break;
-			}
+			found = 1;
+			// break;
+		} else
+		{
+			found = 0;
+			// break;
 		} 
 	}
 
@@ -124,7 +121,6 @@ GameBoard bestCase(int numPegs)
 		bool found = false;
 		while (j < 4 && found == false) // try reverse up, right, down, left
 		{
-			//cout<<"R: "<<curR<<"\t C: "<<curC<<"\t J: "<<j<<endl;
 			switch (j)
 			{
 			case 0: {//reverseUp
@@ -135,7 +131,6 @@ GameBoard bestCase(int numPegs)
 					{
 						bc.makeReverseMove(j, curR, curC);
 						found = true;
-						//cout<<"MOVED up"<<endl;
 					} else
 					{
 						curR = curR - 2;
@@ -151,7 +146,6 @@ GameBoard bestCase(int numPegs)
 					{
 						bc.makeReverseMove(j, curR, curC);
 						found = true;
-						//cout<<"MOVED right"<<endl;
 					} else
 					{
 						curC = curC + 2;
@@ -167,7 +161,6 @@ GameBoard bestCase(int numPegs)
 					{
 						bc.makeReverseMove(j, curR, curC);
 						found = true;
-						//cout<<"MOVED down"<<endl;
 					} else
 					{
 						curR = curR + 2;
@@ -183,7 +176,6 @@ GameBoard bestCase(int numPegs)
 					{
 						bc.makeReverseMove(j, curR, curC);
 						found = true;
-						//cout<<"MOVED left"<<endl;
 					} else
 					{
 						curC = curC - 2;
@@ -201,9 +193,4 @@ GameBoard bestCase(int numPegs)
 		}
 	}
 	return (bc);
-}
-GameBoard betterCase(int)
-{
-	vector<Move> path;
-	Move current(1, 0, 2);
 }
