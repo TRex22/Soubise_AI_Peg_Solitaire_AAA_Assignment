@@ -18,6 +18,35 @@
 \usepackage[noend]{algpseudocode}
 \usepackage{listings}
 
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+
+ \lstset{frame=tb,
+  language=C++,
+  breaklines=true,
+  showstringspaces=false,
+  columns=flexible,
+  numbers=none,
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  tabsize=3
+}
+\lstdefinelanguage{XML}
+{
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  morecomment=[s]{<?}{?>},
+  stringstyle=\color{black},
+  identifierstyle=\color{darkblue},
+  keywordstyle=\color{cyan},
+  morekeywords={xmlns,version,type,ma-id}% list your attributes here
+}
+
 \graphicspath{ {images/} }
 
 \title{Peg Solitaire Backtracking Assignment}
@@ -276,6 +305,29 @@ We assume that our basic opertion used for analysis in the backtracking algorith
 \noindent In the worst case complexity event no game win is possible so every possible path has to be traversed by the algorithm. Each peg has the potential to move in four directions but that is unlikely. From our observations of the game being played out moves on a board from a start state tends to allow on average two possible moves per peg when moves are available. This means that on average (based on our observations) the game has a branching factor of 2. Since each path can be considered to be a branch on a tree data structure and the number of branches is the number of pegs which is assumed to be n. This means that the total search space (game-space) size is $2^n$ and so the worst case complexity is directly propotional to this number i.e. the worst case complexity is $O(2^n)$. 
 
 \section{Results}
+\subsection{Graphs}
+\begin{figure}[H]
+	\centering
+	\label{avgnumpegs}
+	\includegraphics[width=.90\textwidth,scale=.90]{images/AverageNumPegs}
+	\caption{Average Available Moves Per Peg at Each Iteration of Stack Based Algorithm}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\label{recursive}
+	\includegraphics[width=.90\textwidth,scale=.90]{images/Recursive}
+	\caption{Timed Results of Number of Pegs Versus Completion Time for Recursive Implementation}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\label{avgnumpegs}
+	\includegraphics[width=.90\textwidth,scale=.90]{images/Stack}
+	\caption{Timed Results of Number of Pegs Versus Completion Time for Stack Implementation}
+\end{figure}
+
+\noindent Appendix B contains the tables of generated results.
 
 \section{Empirical Analysis}
 
@@ -302,8 +354,148 @@ Report                  & 25\%                          & 75\%                  
 All drawn diagrams were drawn using \url{http://draw.io/} and charts were made with Libre Office.\\ 
 All the programming was done in c++ using OpenMP for its timing functions.\\
 
-
 \bibliographystyle{plain}
 \bibliography{biblio}{}
+\break
+
+\section*{Appendix A: Source Code}
+
+% Source: backtracking.cpp
+\subsection{{Source: backtracking.cpp}}
+\lstinputlisting[language=C++]{../src/backtracking.cpp}
+
+\subsection{{Source: solitaire_board.h}}
+\lstinputlisting[language=C++]{../src/solitaire_board.h}
+
+\subsection{{Source: move.h}}
+\lstinputlisting[language=C++]{../src/move.h}
+
+\subsection{{Source: main.cpp}}
+\lstinputlisting[language=C++]{../src/main.cpp}
+
+\subsection{{Source: helpers.cpp}}
+\lstinputlisting[language=C++]{../src/helpers.cpp}
+
+\break
+\section*{Appendix B: Results}
+
+\begin{table}[H]
+\centering
+\label{recursive-table}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+\textbf{Amount} & \textbf{Time(Best Case states)} & \textbf{Time(Random states)} & \textbf{Found A Path?} & \textbf{End State} \\ \hline
+\textbf{1}      & 0,000012993                     & 0,000007902                  & 0                      & 3                  \\ \hline
+\textbf{2}      & 0,000013994                     & 0,000007642                  & 0                      & 3                  \\ \hline
+\textbf{3}      & 0,000014695                     & 0,00000827                   & 0                      & 3                  \\ \hline
+\textbf{4}      & 0,000045349                     & 0,000008324                  & 0                      & 3                  \\ \hline
+\textbf{5}      & 0,000017047                     & 0,00006715                   & 0                      & 3                  \\ \hline
+\textbf{6}      & 0,000017154                     & 0,000045409                  & 0                      & 3                  \\ \hline
+\textbf{7}      & 0,000035677                     & 0,000019492                  & 0                      & 3                  \\ \hline
+\textbf{8}      & 0,000136504                     & 0,000223362                  & 0                      & 3                  \\ \hline
+\textbf{9}      & 0,000953186                     & 0,00031693                   & 0                      & 3                  \\ \hline
+\textbf{10}     & 0,0377231                       & 0,0249256                    & 0                      & 3                  \\ \hline
+\textbf{11}     & 0,578075                        & 0,000131526                  & 0                      & 3                  \\ \hline
+\textbf{12}     & 0,165076                        & 0,00613507                   & 0                      & 3                  \\ \hline
+\textbf{13}     & 0,00160808                      & 1,3081                       & 0                      & 3                  \\ \hline
+\textbf{14}     & 2,05269                         & 0,00337623                   & 0                      & 3                  \\ \hline
+\textbf{15}     & 9,56415                         & 83,1621                      & 1                      & 3                  \\ \hline
+\textbf{16}     & 0,228359                        & 18,762                       & 0                      & 3                  \\ \hline
+\textbf{17}     & 314,24                          & 2442,48                      & 0                      & 3                  \\ \hline
+\end{tabular}
+\caption{Timed Results of Recursive Implementation}
+\end{table}
+
+\begin{table}[H]
+\centering
+\label{stack-table}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Amount} & \textbf{Path Size} & \textbf{Time (Random State)} & \textbf{Time(Best Case State)} \\ \hline
+\textbf{1}      & 0                  & 0,000087546                  & 0,000079554                    \\ \hline
+\textbf{2}      & 1                  & 0,000180635                  & 0,000087919                    \\ \hline
+\textbf{3}      & 2                  & 0,000088643                  & 0,000111731                    \\ \hline
+\textbf{4}      & 3                  & 0,000089779                  & 0,000135486                    \\ \hline
+\textbf{5}      & 4                  & 0,000326819                  & 0,000147682                    \\ \hline
+\textbf{6}      & 6                  & 0,000095684                  & 0,000334714                    \\ \hline
+\textbf{7}      & 8                  & 0,000097001                  & 0,000492098                    \\ \hline
+\textbf{8}      & 9                  & 0,00132629                   & 0,000701262                    \\ \hline
+\textbf{9}      & 10                 & 0,00198162                   & 0,00102037                     \\ \hline
+\textbf{10}     & 11                 & 0,00194504                   & 0,00138001                     \\ \hline
+\textbf{11}     & 12                 & 0,00236243                   & 0,00171943                     \\ \hline
+\textbf{12}     & 14                 & 0,00278941                   & 0,0016969                      \\ \hline
+\textbf{13}     & 15                 & 0,00338771                   & 0,00189975                     \\ \hline
+\textbf{14}     & 16                 & 0,00449822                   & 0,00250172                     \\ \hline
+\textbf{15}     & 18                 & 0,00444476                   & 0,00323355                     \\ \hline
+\textbf{16}     & 19                 & 0,00549958                   & 0,00417548                     \\ \hline
+\textbf{17}     & 20                 & 0,00680899                   & 0,00539972                     \\ \hline
+\textbf{18}     & 20                 & 0,00917923                   & 0,00540915                     \\ \hline
+\textbf{19}     & 20                 & 0,00908114                   & 0,00544882                     \\ \hline
+\textbf{20}     & 20                 & 0,010037                     & 0,00536063                     \\ \hline
+\textbf{21}     & 20                 & 0,0111601                    & 0,00533272                     \\ \hline
+\textbf{22}     & 20                 & 0,0128546                    & 0,00537615                     \\ \hline
+\textbf{23}     & 20                 & 0,0170417                    & 0,00538194                     \\ \hline
+\textbf{24}     & 20                 & 0,0175451                    & 0,00548215                     \\ \hline
+\textbf{25}     & 20                 & 0,0212161                    & 0,00533657                     \\ \hline
+\textbf{26}     & 20                 & 0,0195111                    & 0,00539675                     \\ \hline
+\textbf{27}     & 20                 & 0,0194284                    & 0,00534268                     \\ \hline
+\textbf{28}     & 20                 & 0,0238981                    & 0,00536282                     \\ \hline
+\textbf{29}     & 20                 & 0,0263172                    & 0,00542806                     \\ \hline
+\textbf{30}     & 20                 & 0,0252291                    & 0,00536498                     \\ \hline
+\textbf{31}     & 20                 & 0,0283234                    & 0,00533903                     \\ \hline
+\textbf{32}     & 20                 & 0,0319084                    & 0,00535362                     \\ \hline
+\textbf{33}     & 20                 & 0,030172                     & 0,00537846                     \\ \hline
+\textbf{34}     & 20                 & 0,0382437                    & 0,0053947                      \\ \hline
+\textbf{35}     & 20                 & 0,0450741                    & 0,0053488                      \\ \hline
+\textbf{36}     & 20                 & 0,0423465                    & 0,00541166                     \\ \hline
+\end{tabular}
+\caption{Timed Results of Stack Based Implementation}
+\end{table}
+
+\begin{table}[]
+\centering
+\label{avg-pegs-table}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Amount} & \textbf{Average Moves Per Peg (Random case)} & \textbf{Average Moves Per Peg (Best case State)} \\ \hline
+\textbf{1}      & 0                                            & 0                                                \\ \hline
+\textbf{2}      & 0                                            & 4                                                \\ \hline
+\textbf{3}      & 0                                            & 2,66667                                          \\ \hline
+\textbf{4}      & 0                                            & 2                                                \\ \hline
+\textbf{5}      & 4                                            & 1,4                                              \\ \hline
+\textbf{6}      & 4                                            & 1,8125                                           \\ \hline
+\textbf{7}      & 3,71429                                      & 1,91667                                          \\ \hline
+\textbf{8}      & 3,52941                                      & 2,0303                                           \\ \hline
+\textbf{9}      & 3,75                                         & 2,27907                                          \\ \hline
+\textbf{10}     & 4                                            & 2,37037                                          \\ \hline
+\textbf{11}     & 3,57895                                      & 2,39394                                          \\ \hline
+\textbf{12}     & 3,5493                                       & 1,875                                            \\ \hline
+\textbf{13}     & 3,37349                                      & 1,72632                                          \\ \hline
+\textbf{14}     & 3,20833                                      & 1,86486                                          \\ \hline
+\textbf{15}     & 2,89655                                      & 1,95349                                          \\ \hline
+\textbf{16}     & 3,375                                        & 2,12838                                          \\ \hline
+\textbf{17}     & 3,22759                                      & 2,2619                                           \\ \hline
+\textbf{18}     & 3,16981                                      & 2,02128                                          \\ \hline
+\textbf{19}     & 2,85057                                      & 1,82692                                          \\ \hline
+\textbf{20}     & 3,38798                                      & 1,66667                                          \\ \hline
+\textbf{21}     & 3,86667                                      & 1,53226                                          \\ \hline
+\textbf{22}     & 3,74775                                      & 1,41791                                          \\ \hline
+\textbf{23}     & 3,8247                                       & 1,31944                                          \\ \hline
+\textbf{24}     & 3,45763                                      & 1,23377                                          \\ \hline
+\textbf{25}     & 3,6129                                       & 1,15854                                          \\ \hline
+\textbf{26}     & 3,64308                                      & 1,09195                                          \\ \hline
+\textbf{27}     & 3,98834                                      & 1,03261                                          \\ \hline
+\textbf{28}     & 3,89474                                      & 0,979381                                         \\ \hline
+\textbf{29}     & 3,71163                                      & 0,931373                                         \\ \hline
+\textbf{30}     & 3,46309                                      & 0,88785                                          \\ \hline
+\textbf{31}     & 3,79381                                      & 0,848214                                         \\ \hline
+\textbf{32}     & 3,69925                                      & 0,811966                                         \\ \hline
+\textbf{33}     & 3,55862                                      & 0,778689                                         \\ \hline
+\textbf{34}     & 3,49762                                      & 0,748031                                         \\ \hline
+\textbf{35}     & 3,47977                                      & 0,719697                                         \\ \hline
+\textbf{36}     & 3,28937                                      & 0,693431                                         \\ \hline
+\end{tabular}
+\caption{Average Available Moves Per Peg for the Stack Implementation}
+\end{table}
 
 \end{document}

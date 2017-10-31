@@ -1,13 +1,13 @@
 class Move
 {
-	private:
+private:
 
-	public:
-		Move(int id, int x, int y);
+public:
+	Move(int id, int x, int y);
 
-		int id;
-		int r;
-		int c;
+	int id;
+	int r;
+	int c;
 };
 
 Move::Move(int id, int x, int y)

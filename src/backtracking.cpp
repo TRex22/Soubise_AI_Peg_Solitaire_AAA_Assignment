@@ -20,7 +20,7 @@ GameBoard backtracking_stack(GameBoard start, vector<vector<int>> &outPath, int 
 		stackVector.pop_back();
 		current.copy(boardVector.back());
 		boardVector.pop_back();
-		
+
 		//print stuff
 		current.printBoard();
 		cout << "back tracked path \t V:" << stackVector.size() << "\tP:" << path.size() << endl;
@@ -61,7 +61,7 @@ GameBoard backtracking_stack(GameBoard start, vector<vector<int>> &outPath, int 
 		{
 			found = 0;
 			// break;
-		} 
+		}
 	}
 
 	return current;

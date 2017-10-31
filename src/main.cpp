@@ -16,7 +16,7 @@ Jason Chalom 711985
 #include "omp.h"
 
 #include "move.h"
-#include "helpers.h"
+#include "helpers.cpp"
 #include "solitaire_board.h"
 #include "backtracking.cpp"
 
@@ -106,11 +106,11 @@ void runBestCase(int num)
         bool found = bc.checkGameWin();
         // Output results
         cout << "amount: " << amount << " path_length: " << path.size() << " time: " << time << " Found: " << found << endl;
-        
+
         double avgNumPegs = 0.0;
         if (numValidMoves != 0)
         {
-            avgNumPegs = (double)totalNumPegs/numValidMoves;
+            avgNumPegs = (double)totalNumPegs / numValidMoves;
         }
         cout << "AverageNumPegs: " << avgNumPegs << endl;
         cout << "totalNumPegs: " << totalNumPegs << "\t numValidMoves: " << numValidMoves << endl << endl;
@@ -160,7 +160,7 @@ void run_stack_backtracking()
         double avgNumPegs = 0.0;
         if (numValidMoves != 0)
         {
-            avgNumPegs = (double)totalNumPegs/numValidMoves;
+            avgNumPegs = (double)totalNumPegs / numValidMoves;
         }
         cout << "AverageNumPegs: " << avgNumPegs << endl;
         cout << "totalNumPegs: " << totalNumPegs << "\t numValidMoves: " << numValidMoves << endl << endl;
@@ -188,7 +188,7 @@ void run_recursive_backtracking()
     final_2.board[1][3] = 1;
 
     GameBoard final_3;
-    final_3.board[2][3] = 1; 
+    final_3.board[2][3] = 1;
 
     for (int i = 1; i <= 17; i = i + 1)
     {
