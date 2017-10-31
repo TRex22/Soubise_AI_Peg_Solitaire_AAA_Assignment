@@ -69,8 +69,6 @@ GameBoard backtracking_stack(GameBoard start, vector<vector<int>> &outPath, int 
 
 bool backtracking_recursive(GameBoard start, GameBoard final, vector<Move> path)
 {
-	bool DEBUG = 0;
-
 	if (start.numPegs() <= final.numPegs())
 	{
 		return start.equals(final);
@@ -81,15 +79,6 @@ bool backtracking_recursive(GameBoard start, GameBoard final, vector<Move> path)
 		start.getMoves(moves);
 		for (Move J : moves)
 		{
-			if (DEBUG)
-			{
-				cout << "TEST in BackTrack:" << endl;
-				start.printBoard();
-				std::cout << "id: " << J.id << " r: " << J.r << " c: " << J.c << std::endl;
-				std::cout << "Check: " << start.checkIfMoveValid(J.id, J.r, J.c) << std::endl;
-				std::cout << "Path Size: " << path.size() << std::endl;
-			}
-
 			if (start.checkIfMoveValid(J.id, J.r, J.c))
 			{
 				start.makeMove(J.id, J.r, J.c);

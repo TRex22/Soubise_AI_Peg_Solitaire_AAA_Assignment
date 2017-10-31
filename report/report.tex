@@ -240,6 +240,11 @@ The conditions where the stack implemntation will terminate are :
 \item Found one of the three "win" states.
 \item If the algorithm finds it's self on the orginal path that was generated and the path size of that path is zero (poped off all moves) . i.e. There is nowhere higher to back track too, and all moves on the current path have been exasusted then the algorithm has tried all possible moves and will conclude that a "win"  state cannot be found given the current start state and will terminate.
 \end{itemize}
+\subsection{Best Case}
+We decided that it would be helpfull to have best case data points for both recursive and the stack implemntation to compare with. These best case game states always incude a single path that will result in finding a "win" state.\\
+However there is a major issue that we ran into regarding the best case state generator. It only worked up to 17 pegs. This due to the way we generate the backwards path. i.e it will start at a "win" state and try a up reversal, if it can't, it will try a right move reversal,if it can't, then try a down reversal and if that fails try a left move reversal.\\
+Contiueing this pattern the board will be filled with n pegs if n<=17. When we try creating 18+ points it will fail to find any valid reverse move and as such 17 points is the maximum number of points we could create with this algorithm.
+
 
 \subsection{Problems We Encountered}
 % Why - recursive due to it relying on heap ... slow internally

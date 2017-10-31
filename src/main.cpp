@@ -30,8 +30,6 @@ Jason Chalom 711985
 #define results3_header "amount,time,end state"
 #define results3_location "./results/results_exp3_recurse.csv"
 GameBoard gb;
-bool DEBUG = 0;
-
 
 /* Headers */
 int main(int argc, char *argv[]);
@@ -93,17 +91,11 @@ void runBestCase(int num)
 
     double total_start = omp_get_wtime();
 
-    // increment number of experiments
     for (int i = 1; i <= 36; i = i + 1)
     {
         totalNumPegs = 0;
-        int amount = i;//redundant?
+        int amount = i;
         GameBoard bc = bestCase(amount);;
-        if (DEBUG)
-        {
-            cout << "Start State:" << std::endl;
-            bc.printBoard();
-        }
         std::vector<std::vector<int>> path;
         double start = omp_get_wtime();
 
@@ -112,12 +104,6 @@ void runBestCase(int num)
         double time = omp_get_wtime() - start;
 
         bool found = bc.checkGameWin();
-        if (DEBUG)
-        {
-            cout << "End State:" << std::endl;
-            bc.printBoard();
-        }
-
         // Output results
         cout << "amount: " << amount << " path_length: " << path.size() << " time: " << time << " Found: " << found << endl;
         
@@ -131,7 +117,6 @@ void runBestCase(int num)
 
         // print file line
         ostringstream out;
-        //cout<<"Printing"<<std::endl;
         out << amount << "," << path.size() << "," << time << "," <<  found << endl;
         write_results_to_file(results3_location, out.str());
     }
@@ -155,18 +140,11 @@ void run_stack_backtracking()
 
     double total_start = omp_get_wtime();
 
-    // increment number of experiments
     for (int i = 1; i <= 36; i = i + 1)
     {
         totalNumPegs = 0;
-        int amount = i;//redundant?
-        GameBoard gb_new(amount);
-        if (DEBUG)
-        {
-            cout << "Start State:" << std::endl;
-            gb_new.printBoard();
-        }
-
+        int amount = i;
+        GameBoard gb_new(i);
         std::vector<std::vector<int>> path;
         double start = omp_get_wtime();
 
@@ -175,11 +153,6 @@ void run_stack_backtracking()
         double time = omp_get_wtime() - start;
 
         bool found = gb_new.checkGameWin();
-        if (DEBUG)
-        {
-            cout << "End State:" << std::endl;
-            gb_new.printBoard();
-        }
 
         // Output results
         cout << "amount: " << amount << " path_length: " << path.size() << " time: " << time << " Found: " << found << endl;
@@ -194,8 +167,7 @@ void run_stack_backtracking()
 
         // print file line
         ostringstream out;
-        //cout<<"Printing"<<std::endl;
-        out << amount << "," << path.size() << "," << time << "," <<  found << endl;
+        out << amount << "," << path.size() << "," << time << "," <<  avgNumPegs << endl;
         write_results_to_file(results1_location, out.str());
     }
 
@@ -209,36 +181,24 @@ void run_recursive_backtracking()
     write_results_to_file(results2_location, results2_header, "");
 
     double total_start = omp_get_wtime();
-
-    // end states for European
-    // 3:   0,2
-    //      1,3
-    //      2,3
     GameBoard final_1;
-    final_1.board[0][2] = 1; //final peg
+    final_1.board[0][2] = 1;
 
     GameBoard final_2;
-    final_2.board[1][3] = 1; //final peg
+    final_2.board[1][3] = 1;
 
     GameBoard final_3;
-    final_3.board[2][3] = 1; //final peg
+    final_3.board[2][3] = 1; 
 
-    // increment number of experiments
-    for (int i = 1; i <= 37; i = i + 1)
+    for (int i = 1; i <= 17; i = i + 1)
     {
-        int amount = i;//redundant?
+        int amount = i;
         std::vector<Move> path;
         bool found = false;
         int end_state = 1;
         double start = 0.0, time = 0.0;
 
         GameBoard gb_new(amount);
-        if (DEBUG)
-        {
-            cout << "Start State:" << std::endl;
-            gb_new.printBoard();
-        }
-
         start = omp_get_wtime();
         // Add what ever being timed here
         found = backtracking_recursive(gb_new, final_1, path);
@@ -266,20 +226,12 @@ void run_recursive_backtracking()
             end_state = 3;
         }
 
-
-        if (DEBUG)
-        {
-            cout << "End State:" << std::endl;
-            gb_new.printBoard();
-        }
-
         // Output results
         // "amount,number_denominations,time,found,end state"
         cout << "amount: " << amount << " path_length: " << path.size() << " time: " << time << " Found: " << found << " End State: " << end_state << endl << endl;
 
         // print file line
         ostringstream out;
-        //cout<<"Printing"<<std::endl;
         out << amount << "," << path.size() << "," << time << "," << found << "," << end_state << endl;
         write_results_to_file(results2_location, out.str());
     }
