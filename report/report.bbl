@@ -1,5 +1,11 @@
 \begin{thebibliography}{1}
 
+\bibitem{bronson2012}
+{Bronson, G.J.}
+\newblock {\em {C++ Programming: Principles and Practices for Scientists and
+  Engineers}}.
+\newblock Cengage Learning, 2012.
+
 \bibitem{harder}
 Douglas~Wilhelm Harder.
 \newblock Peg solitaire.

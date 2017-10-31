@@ -118,12 +118,12 @@
 
 
 \section{Introduction}
-The purpose of the assignment is to implement and analyse a version of the Peg Solitaire game and the backtracking algorithm (to play the game to completion and return a valid path).
+Our aim for this assignment is to implement a version of the Peg solitaire game and use the backtracking algorithm to find solutions to randomly generated peg positions of the game. We have analyzed the complexity of our solution algorithm and performed empirical analysis on our implementation.
 
 \section{Background}
-Peg Solitaire is a board game which has a number of holes that can be filled with pegs. We have chosen to use the European/French style of board which has four extra positions for pegs on the board \ref{board}. In this style most of a grid of 49 has peg holes excluding three per corner resulting in 37 peg holes. The aim of the game is to remove pegs until only one peg remains. This is the position one row directly above the central peg, a row above that and the left most peg in the top row. Moves are made when pegs jump over a peg and are placed in an open position. Then a peg which has been jumped over, is then removed. This move can happen in both horizontal and vertical directions. In the European variant, the game has three possible optimal terminal states. Its is possible to hit sub-optimal states where there are more pegs left on the board but no possible moves left \cite{harder}. 
+Peg Solitaire is a board game which has a number of holes that can be filled with pegs. We have chosen to use the European (French) style of board which has four extra positions for pegs on the board \ref{board}. This style has 37 peg holes. The aim of the game is to remove pegs until only one peg remains. There are 3 terminal win states in our chosen configuration \ref{board}. Moves are made when pegs jump over a peg and are placed in an open position. Then the peg which has been jumped over, is removed. This move can happen in both horizontal and vertical directions. Its is possible to hit sub-optimal states where there are more pegs left on the board but no possible moves left \cite{harder}. 
 
-% Have example moves and suboptimal states?
+% Have example moves and sub-optimal states?
 \begin{figure}[H]
 	\centering
 	\label{board}
@@ -136,7 +136,7 @@ Peg Solitaire is a board game which has a number of holes that can be filled wit
 			}
 \end{figure}
 
-% cite the wayback machine??
+% cite the way-back machine??
 \noindent The backtracking algorithm is similar to a brute force approach to finding solutions to problems but is more systematic. It attempts to follow a logical series of decisions in solving these problems and when a block state occurs the algorithm will backtrack to previous decisions and choose different paths until a terminal (complete) state is reached. The full set of solutions to a problem can be found by continuing to run the algorithm until all paths have been searched but that is not always necessary.
 
 \begin{algorithm}[H]
@@ -168,7 +168,7 @@ Peg Solitaire is a board game which has a number of holes that can be filled wit
 
 
 \subsection{Stack Based Algorithm}
-The stack based algorithm we used is adapted from the recursive version. The purpose of implementing the stack based algorithm was to compare it's effciency to that of the recursive based algorithm. Also the recursive algorithm was expected to be much slower.
+The stack based algorithm we used is adapted from the recursive version. The purpose of implementing the stack based algorithm was to compare it's effciency to that of the recursive based algorithm. The recursive algorithm was also expected to be much slower and perhaps unable to test all the given amount of peg positions in a resonable test time.
 
 \begin{algorithm}[H]
 	\begin{algorithmic}[1]
@@ -228,25 +228,23 @@ The stack based algorithm we used is adapted from the recursive version. The pur
 % Average Number of Avilable Peg Moves = Cumulative Num of valid moves / Cumulative Number of Pegs (Across all states)
 
 \subsection{Technology Used}
-We made use of c++ 11, its standard libraries and OpenMP to time our results. Our results are saved as comma seperated value files which are then processed and graphed by libre office.\\
-To create the stacks in the stack implemntation we used vectors.\\
-To generate the pseudorandom numbers we used the Mersenne Twister engine that comes included in the c++ "random" library.\\
-%TODO make a refrence to Mersenne  twister. either its wiki page or a mt distrubiton example on cpprefrence
-%and this
+We made use of c++ 11, its standard libraries and OpenMP to time our results. Our results are saved as comma separated value files which are then processed and graphed by libre office.\\
+
 \subsection{How To Compile and Run}
 In order to compile and run the code:\\
 % TODO proper styling
 Go to root folder of the project and run make.\\
 Then run ./bin/game.out to run the game.
 \\\\
-\noindent Commandline Parameters:
+\noindent Command-line Parameters:
 \begin{lstlisting}
-	
 	Usage Example: ./bin/game.out -rb
+	
 	Random state: ./bin/game.out -rr
 	Full state: ./bin/game.out -rf
 	Run Stacked Based Backtracking: -rb
 	Run Recursive Backtracking: -recurse
+	Test: -t
 	Manual: -m
 	Help: -h
 \end{lstlisting}
@@ -254,65 +252,76 @@ Then run ./bin/game.out to run the game.
 % must show states
 
 \subsection{Our Termination Conditions}
-Although both algorithms terminate under similar theoretical conditions (no more moves possible or it has reached a "win" state), due to their different implemntations, the teminating conditions are diffrent.
+Although both algorithms terminate under similar theoretical conditions (no more moves possible or it has reached a win state), due to their different implementations, the terminating conditions are different.
 \subsubsection{Recursive Implementation}
-This implentation works very similar to a Depth First Search and will terminate under very similar conditions to a DFS algoritm.\\
-These conditions are : 
+This implementation works very similar to a Depth First Search and will terminate under very similar conditions to a DFS algorithm.\\
+\\
+\noindent These conditions are: 
 \begin{itemize}
-\item Found one of the three "win" states.
-\item Cannot backtrack any further: So the algorithm has returned to the root layer, and as such hasn't found any of the "win" states, and wishes to try backtrack further, however there are no more layers to backtrack too and as such the algorithm will conclude that a "win"  state cannot be found given the current start state and will terminate.
+\item Found one of the three win states.
+\item Cannot backtrack any further - the algorithm has returned to the root layer, and therefore no win states are possible so the algorithm will terminate.
 \end{itemize}
+
 \subsubsection{Stack Implementation}
-This implementation works diffrently from the recursive as it uses a stack of paths to store the progress down a branch of a tree and create backtrack points when ever the algorithm does a move.\\
-The conditions where the stack implemntation will terminate are :
+This implementation works differently from the recursive as it uses a stack of paths to store the progress down a branch of a tree and will simulate backtracks with pops off the stack when reversing a move is required.\\\\
+
+\noindent The conditions where the stack implementation will terminate are:
 \begin{itemize}
-\item Found one of the three "win" states.
-\item If the algorithm finds it's self on the orginal path that was generated and the path size of that path is zero (poped off all moves) . i.e. There is nowhere higher to back track too, and all moves on the current path have been exasusted then the algorithm has tried all possible moves and will conclude that a "win"  state cannot be found given the current start state and will terminate.
+\item Found one of the three win states.
+\item If the stack becomes empty this means that there are no move available moves left i.e. there are no win states for these initial conditions.
 \end{itemize}
+
 \subsection{Best Case}
-We decided that it would be helpfull to have best case data points for both recursive and the stack implemntation to compare with. These best case game states always incude a single path that will result in finding a "win" state.\\
-However there is a major issue that we ran into regarding the best case state generator. It only worked up to 17 pegs. This due to the way we generate the backwards path. i.e it will start at a "win" state and try a up reversal, if it can't, it will try a right move reversal,if it can't, then try a down reversal and if that fails try a left move reversal.\\
-Contiueing this pattern the board will be filled with n pegs if n<=17. When we try creating 18+ points it will fail to find any valid reverse move and as such 17 points is the maximum number of points we could create with this algorithm.
+We decided that it would be helpful to have best case data points for both the recursive and the stack based implementations. These best case game states always include a single path that will result in finding a win state.\\
+
+\noindent However there is a major issue that we ran into regarding the best case state generator. It only worked up to 17 pegs. This due to the way we generate the backwards path. i.e it will start at a win state and try a backward move until either all four directions have been tried and failed or a backward move is possible.\\
+
+\noindent Continuing this pattern the board will be filled with n pegs if n<=17. When we try creating more than 18 points it will fail to find any valid reverse move.
 
 
 \subsection{Problems We Encountered}
 % Why - recursive due to it relying on heap ... slow internally
 % stack is much more efficient use of memory
 % We then checked results manually and with tests to ensure the correct choices were made - printed out states
-One of the most notable feature/Problem we encountered was that the stack implemntation was incrediably fast relative to the recursive implemntation. Both returned the correct output but because of the recursive implemntation relying on a heap, we only managed to get 17 data points in 30 hours of the program running. \\
-The stack implemntation doesn't use the heap (which the recursive alogrithm does), which is internally slow, so therefore allowing the stack implemntation's effciency to far surpass that of the recursive's.\\
-The vector stack in c++ also is a much more effcient use of memory compared to storing objects on a heap.\\\
+One of the most notable differences we encountered in our implementations was that the stack implementation was greatly more efficient and speedy in comparison to the recursive implementation. Both returned the correct output but because of the recursive implementation relying on a heap, we only managed to get results for 17 data points (peg configurations). \\
+
+\noindent The stack implementation doesn't use the heap (which the recursive algorithm does), which is internally slow, so therefore allowing the stack implementation's speed to far surpass that of the recursive implementation. Using the heap is very memory and CPU cycle inefficient.\\
+
+\noindent The vector class in c++ is also much more memory efficient than the built in heap recursion available.
 
 \subsection{Experimental Setup}
 % Describe how we test
 % Our loops 
 % recursive has 3 final states so its run 3 times because its finding 3 different win states
-For our experiment we tested with an increasing number of pegs being place randomly throughout the board.\\
-Each test will try to find one of the three "win" states based on the  starting state that was generated. This proccess will be timed and the time, together with the number of pegs that were generated will be recoreded.\\
-Although with the recursive implemntation we have  to run the same state three times (once for each of the three possible "win" states) the time that is being recorded is the amount of time that it takes to run the instance of the algoritm that finds a  "win" state, or the time it takes for one instance to explore the entire tree, not all three.\\
+For our experiment we tested with an increasing number of pegs being placed randomly throughout the board.\\
+
+\noindent Each test attempts to find one of the three win states based on the initial state that was generated. This process is timed and the number of pegs that were generated will are recorded.\\
+
+\noindent In the recursive implementation we run each configuration three times because the algorithm we used relies on a final state as an input. Our board configuration has three terminal states. The recorded data is based on either the situation that a win state is found or the last experiment run per configuration.\\
 %TODO explain this better.
 
 
 \section{Theoretical Analysis}
-We assume that our basic opertion used for analysis in the backtracking algorithm for peg-solitaire is generating a new state which is playing a valid move or jumping a peg into a valid empty space (and removing a peg between them). Determining if there are no more moves, and also getting every valid move for a peg are both assumed to take constant time, which is the speed of each conditional by the number of board elements i.e. 49 elements.\\\
+We assume that our basic operation used for analysis in the backtracking algorithm for peg-solitaire is generating a new state (which is playing a valid move or jumping a peg into a valid empty space - and removing a peg between them). Determining if there are no more moves, and also getting every valid move for a peg are both assumed to take constant time, which is the speed of each conditional by the number of board elements i.e. 49 elements.\\\
 
-\noindent The best case complexity of backtracking for peg-solitaire would be the case where only one path needs to be generated for any number of pegs i.e. no backtracks occur because a game win is found at the end of the first path. In this case the complexity is the number of pegs left on the board or the length of the found path. If we assume this number is represented by the variable n, then the best case complexity is $O(n)$.\\\
+\noindent The best case complexity of backtracking for peg-solitaire would be the case where only one path needs to be generated for any number of pegs i.e. no backtracks occur because a game win is found at the end of the first path traversed. In this case the complexity is the number of pegs left on the board or the length of the found path. If we assume this number is represented by the variable n, then the best case complexity is $O(n)$.\\\
 
 % number of moves = 4
 % number of pegs
 % decreasing number of pegs
 
-\noindent In the worst case complexity event no game win is possible so every possible path has to be traversed by the algorithm. Each peg has the potential to move in four directions but that is unlikely. From our observations of the game being played out moves on a board from a start state tends to allow on average two possible moves per peg when moves are available. This means that on average (based on our observations) the game has a branching factor of 2. Since each path can be considered to be a branch on a tree data structure and the number of branches is the number of pegs which is assumed to be n. This means that the total search space (game-space) size is $2^n$ and so the worst case complexity is directly propotional to this number i.e. the worst case complexity is $O(2^n)$. 
+\noindent In the worst case complexity event no game win is possible so every possible path has to be traversed by the algorithm. Each peg has the potential to move in four directions but that is unlikely. However in the worst case the theoretical branching factor with respect to the number of moves is 4. Since each path can be considered to be a branch on a tree data structure and the number of branches is the number of pegs which is assumed to be n. This means that the total search space (game-space) size is $4^n$ and so the worst case complexity is directly proportional to this number i.e. the worst case complexity is $O(4^n)$. This is the theoretical upper bound for the game.\\\
+
+\noindent There are however other components to the complexity which need to be noted. Firstly we do not consider the position of a specific peg to be unique. If we were to consider each peg to be unique than each placement would have a probability of a specific peg being placed there. This would mean that there would be $n!$ placements available for each peg (such as in a Hamiltonian Cycle). Our test set however does not discriminate between pegs so our state space is effectively the number of board locations which is 37 (49 array positions to traverse).\\\
+
+\noindent The last important factor to our complexity is some $K$ which represents the time complexity of internal operations associated with our specific implementations. $k_1$ is the operational cost associated with our recursive implementation as well as other costs such as traversals which we are not counting here. $k_2$ provides the same information for the stack based method. These two variables replace $K$ depending on which algorithm is being considered. This means that out best case complexity is actually $KO(n)$ and our worst case complexity is $KO(4^n)$ for our respective implementations.
 
 \section{Results}
-\subsection{Graphs}
-\begin{figure}[H]
-	\centering
-	\label{avgnumpegs}
-	\includegraphics[width=.90\textwidth,scale=.90]{images/AverageNumPegs}
-	\caption{Average Available Moves Per Peg at Each Iteration of Stack Based Algorithm}
-\end{figure}
+Appendix B contains the tables of generated results. The recursive results are fairly flat due to the great different between the timed results between number of steps (number of pegs). However the trend is still between linear and exponential. The results for the stack implementation show a much more pronounced trend. Here the best case time is very close to being linear and the random test (effectively an average test) shows a graph which could be exponential i.e. between the upper and lower bounds previously calculated. \\\
 
+\noindent The average available (valid) moves per peg for a given experimental configuration is shown to have an upper bound of 4 and a lower bound of 0.
+
+\subsection{Graphs}
 \begin{figure}[H]
 	\centering
 	\label{recursive}
@@ -327,13 +336,25 @@ We assume that our basic opertion used for analysis in the backtracking algorith
 	\caption{Timed Results of Number of Pegs Versus Completion Time for Stack Implementation}
 \end{figure}
 
-\noindent Appendix B contains the tables of generated results.
+\begin{figure}[H]
+	\centering
+	\label{avgnumpegs}
+	\includegraphics[width=.90\textwidth,scale=.90]{images/AverageNumPegs}
+	\caption{Average Available Moves Per Peg at Each Iteration of Stack Based Algorithm}
+\end{figure}
 
 \section{Empirical Analysis}
+The empirical results are shown to be within our calculated bounds (best and worst case complexities). The recursive implementation has many draw backs such as being incredibly slow and in-efficient in terms of computation and memory use. This makes the results hard to interpret. The graph does show a trend which could be described as exponential as with each step (number of initial pegs) the time difference from the last step is great. The recursive version replicates the memory state of the previous recursive step so this kind of performance is expected within c++ as recursion using the heap is not recommended for this kind of large scale state-space search \cite{bronson2012}.\\\
 
+\noindent The stack based implementation shows a potentially exponential graph for its random case and a linear graph for its best case. The linear graph is expected as the algorithm makes use of optimized library classes such as the c++ vector \cite{bronson2012}. The random (or approximate average) graph is bounded between the two calculated theoretical complexities and so is feasible. The trend of the graph is hard to determine because of how shifted to the right it is. This graph could be exponential or even somewhat quadratic. It is most likely exponential due to the average number of pegs graph \ref{avgnumpegs} showing that for this graph the average number of pegs remains between 3 and 4 so the graph most likely reflects this branching factor. A factor of 4 is enough to shift the graph to the right in a noticeable way. \\\
+
+\noindent The position of the initial configurations for the board plays an important role in our results. There are many configurations that are possible but from our experience in running the experiments very few initial configurations will lead to found solutions (win states). This means that the placement of pegs will have an affect on the number and size of the paths which will exist for any given game. This directly effects the time and space complexity. \\\
+
+\noindent Our recursive implementation was very slow. An observation was made that many of the sub states of the games being simulated are not unique states. One issue discussed is that the branches found within a game are mutually exclusive since they are based on decisions (moves) that have been made. This does not mean sub-states are unique since the game board is relatively small, discrete and bounded.  A mixture of hashing tables and dynamic programming could be used to speed up the played games and make them more efficient by not repeating the same sub-calculations multiple times. This could be done by storing past calculated game-states which may occur more than some threshold amount of times. This will increase memory usage but reduce overall computational time.
 
 \section{Conclusion}
-% Talk about comman non-unique states and using hashing and dynamic programming to improve perforamnce
+Peg-solitaire is a game whose solutions are well suited to the backtracking algorithm because of the branching nature of the moves found in the game. Its game states are however quite complex due to the factorial nature of the board placements. The game's results are highly dependant on the initial configuration of the board and the time taken by the backtracking algorithm to find a solution or to terminate has quite a large bounded area due to the non-deterministic nature of knowing how deep a path is or if an initial setup will have a win state.  
+
 
 \section{Group Member Contribution}
 \begin{table}[H]
@@ -353,6 +374,7 @@ Report                  & 25\%                          & 75\%                  
 \section*{Acknowledgements}
 All drawn diagrams were drawn using \url{http://draw.io/} and charts were made with Libre Office.\\ 
 All the programming was done in c++ using OpenMP for its timing functions.\\
+The lecture on backtracking and our consultation helped us to analyse our results in a meaningful way.
 
 \bibliographystyle{plain}
 \bibliography{biblio}{}
@@ -364,7 +386,7 @@ All the programming was done in c++ using OpenMP for its timing functions.\\
 \subsection{{Source: backtracking.cpp}}
 \lstinputlisting[language=C++]{../src/backtracking.cpp}
 
-\subsection{{Source: solitaire_board.h}}
+\subsection{{Source: solitaire\_board.h}}
 \lstinputlisting[language=C++]{../src/solitaire_board.h}
 
 \subsection{{Source: move.h}}
